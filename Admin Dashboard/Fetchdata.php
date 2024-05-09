@@ -20,4 +20,27 @@ if(isset($_POST["deleteuser"])){
         $delete_user->execute();
         echo "success";
     }
+}else if(isset($_POST['deleteproduct'])){
+  if($_POST['deleteproduct'] === 'deleteproduct'){
+    $porduct_id = $_POST['productid'];
+    $check_prodcut = $connect->prepare("SELECT * FROM products WHERE ProductID=?");
+    $check_prodcut->execute(array($porduct_id));
+    $row_product = $check_prodcut->fetch();
+    $count_product = $check_prodcut->rowCount();
+    if($count_product > 0){
+      $path_image = $row_product['Product_image'];
+      // delete image from folder uploads
+      unlink($path_image);
+      
+      // delete wasteentries
+      $delete_wasteentr = $connect->prepare("DELETE FROM wasteentries WHERE ProductID=:productid");
+      $delete_wasteentr->bindParam("productid" , $row_product['ProductID']);
+      $delete_wasteentr->execute();
+      // delete products
+      $delete_product = $connect->prepare("DELETE FROM products WHERE ProductID=:productid");
+      $delete_product->bindParam("productid" , $row_product['ProductID']);
+      $delete_product->execute();
+      echo "success";
+    }
+  }
 }

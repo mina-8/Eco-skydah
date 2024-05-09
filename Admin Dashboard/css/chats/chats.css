@@ -1,12 +1,25 @@
 .chat-list{
     list-style: none;
 }
-.list {
-width: 100%;
-border-bottom: .2px solid rgb(66, 64, 64);
+.lists{
+/* width: 100%; */
+/* border-bottom: .2px solid rgb(66, 64, 64); */
+margin: 20px;
+position: relative;
+}
+.lists::after{
+    position: absolute;
+    content: "";
+    width: 160%;
+    height: 1px;
+    background-color: black;
+    top: 106%;
+    left: 50%;
+    transform: translate(-53%, -50%);
 }
 .profile{
     text-decoration: none;
+    
 }
 .profile:hover{
     text-decoration: none;

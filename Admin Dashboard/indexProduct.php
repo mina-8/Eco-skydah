@@ -34,6 +34,7 @@ if(!isset($_SESSION["Admin"])){
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  
 </head>
 <body>
   <div class="container-scroller">
@@ -182,8 +183,10 @@ if(!isset($_SESSION["Admin"])){
                           <th>Product</th>
                           <th>Price</th>
                           <th>Date</th>
+                          <th>Quantity</th>
                           <th>Status</th>
                           <th>Image</th>
+                          <th>Options</th>
                         </tr>  
                       </thead>
                       <tbody>
@@ -200,8 +203,15 @@ if(!isset($_SESSION["Admin"])){
                                 <td><?php echo $product['ProductName'] ?></td>
                                 <td class="font-weight-bold"><?php echo "$". $product['Price']?></td>
                                 <td><?php echo $product['CollectionTime'] ?></td>
+                                <td class="font-weight-medium"><div class="badge badge-success"><?php echo $product['Quantity'] ?></div></td>
                                 <td class="font-weight-medium"><div class="badge badge-success"><?php echo $product['Status'] ?></div></td>
                                 <td><img src=<?php echo $product['Product_image'] ?>> </td>
+                                <td>
+                                  
+                                  <button type="button" class="btn btn-danger" onclick="MyAlert(<?php echo $product['ProductID'] ?>)">Danger</button>
+                                  <a class="btn btn-info" href=<?php echo "EditProduct.php?productid=" . $product['ProductID']?>>Edit</a>
+                                </td>
+                                
                               </tr>
                             
                             
@@ -277,6 +287,31 @@ if(!isset($_SESSION["Admin"])){
   <script src="js/dashboard.js"></script>
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
+
+  
+  <!-- alart function delete -->
+  <script>
+
+    function MyAlert(product_id){
+      if(confirm("Are you sure to delete") == true){
+        let data_form = new FormData();
+        data_form.append("deleteproduct" , "deleteproduct");
+        data_form.append("productid" , product_id);
+        $.ajax({
+          url : 'Fetchdata.php',
+          method : "POST",
+          data :data_form,
+          dataType : false,
+          contentType : false,
+          processData : false,
+          success :function(data){
+            location.reload()
+          }
+        })
+      }
+      
+    }
+  </script>
 </body>
 
 </html>

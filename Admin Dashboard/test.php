@@ -1,24 +1,16 @@
-<?php 
-                                // check receiver
-                                if($messages['ReceiverID'] == $_SESSION['Admin_id']){?>
-                                  <div class="mssOut">
-                                      <div class="message col-10"><?php echo $messages['Message'] ?></div>
-                                  </div>
-                                  <?php } else{?>
-                                    <div class="mssOut">
-                                        <div class="message col-10"><?php echo $messages['Message'] ?></div>
-                                    </div>
-                                 
-                                <?php } ?>
-                                <?php 
-                                // check sender
-                                if($messages['SenderID'] == $row_user['UserID']){?>
-                                    <div class="mssOut me">
-                                      <div class="message col-10 me"><?php echo $messages['Message'] ?></div>
-                                    </div>
-                                    <?php }else{?>
-                                      <div class="mssOut me">
-                                        <div class="message col-10 me"><?php echo $messages['Message'] ?></div>
-                                      </div>
-
-                                <?php } ?>
+<nav class="sidebar-right sidebar-offcanvas" id="sidebar">
+      <ul class="chat-list">
+              <li class="list active">
+                <a class="profile" href="Chats.php"><img src="images/faces/face1.jpg" alt="image" class="profile-image"><span class="online"></span>
+                <div class="info">
+                  <p>Thomas Douglas</p>
+                  <!-- <p>Available</p> -->
+                </div>
+                </a>
+                <!-- <small class="text-muted my-auto">19 min</small> -->
+              </li>
+              
+              
+              
+            </ul>
+      </nav>

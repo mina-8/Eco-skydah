@@ -219,8 +219,8 @@ if(!isset($_SESSION["Admin"])){
                                   </td>
                                   <td>
                                     <!-- the confirm function js find in end page -->
-                                  <button type="button" class="btn btn-danger" onclick="MyAlert(<?php echo $user['UserID']?>)">Danger</button>
-                                  <a class="btn btn-info" href=<?php echo "EditUser.php?userid=" . $user['UserID']?>>Edit</a>
+                                  <button type="button" class="btn btn-danger" onclick="MyAlert(<?php echo $user['UserID']?>)">Delete</button>
+                                  <a class="btn btn-info" href=<?php echo "EditProduct.php?productid=" . $user['UserID']?>>Edit</a>
                                     
                                   </td>
                                 </tr> 

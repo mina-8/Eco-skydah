@@ -332,20 +332,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         } // end if condtion check message
                       } // end if conition check chat
                     ?>
-                    <!-- Example old messages -->
-                    <!-- <div class="mssOut">
-                        <div class="message col-10">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, iusto vel. Accusantium quas ipsa facere.</div>
-                    </div>
-                    <div class="mssOut">
-                        <div class="message col-10"> Dolores placeat explicabo facilis, expedita atque eos!</div>
-                    </div> -->
-                    <!-- Example of my messages -->
-                    <!-- <div class="mssOut me">
-                        <div class="message col-10 me">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis, quia.</div>
-                    </div>
-                    <div class="mssOut me">
-                        <div class="message col-10 me">Lorem ipsum dolor sit amet consectetur adipisicing</div>
-                    </div> -->
+                    
                 </div>
                 
                 <div class=" col-8 mx-auto border p-3 bg-white">
@@ -353,7 +340,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div class="input-group">
                       <textarea type="text" name="message" class="form-control me-2 rounded" placeholder="Write Here ..."></textarea>
                       <div class="input-group-append">
-                      <!-- <button class="btn btn-primary px-5" style="height: 62px;">Send </button> -->
+                      
                       <input class="btn btn-primary px-5" style="height: 62px;" type="submit" value="Send"/>
                       </div>
                     </div>
@@ -370,6 +357,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           
         </div>
         <!-- content-wrapper ends -->
+        
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -380,23 +368,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       </div>
       <!-- main-panel ends -->
       
-
       <nav class="sidebar-right sidebar-offcanvas" id="sidebar">
       <ul class="chat-list">
-              <li class="list active">
-                <a class="profile" href="Chats.php"><img src="images/faces/face1.jpg" alt="image" class="profile-image"><span class="online"></span>
+        <?php  
+        // fetch user form table users
+        $fetch_user = $connect->prepare("SELECT * FROM users WHERE `UserID` !=?");
+        $fetch_user->execute(array($_SESSION['Admin_id']));
+        $row_user = $fetch_user->fetchAll();
+        $count_user = $fetch_user->rowCount();
+        // start if condition is users > 0
+        if($count_user > 0){ 
+          // start for loop of users
+          foreach($row_user as $user){
+        ?>
+
+              <li class="lists">
+                <a class="profile" href=<?php echo  "Chats.php?chat=" . $user['UserID'] ?>><img src="images/faces/face1.jpg" alt="image" class="profile-image"><span class="online"></span>
                 <div class="info">
-                  <p>Thomas Douglas</p>
+                  <p><?php echo $user['FirstName'] . " " . $user['LastName'] ?></p>
                   <!-- <p>Available</p> -->
                 </div>
                 </a>
                 <!-- <small class="text-muted my-auto">19 min</small> -->
               </li>
+        <?php } // end loop
+        }//end if condition
+        ?>        
               
               
               
-            </ul>
+      </ul>
       </nav>
+      
       
     </div>   
     <!-- page-body-wrapper ends -->

@@ -781,10 +781,10 @@ if(!isset($_SESSION["Admin"])){
           foreach($row_user as $user){
         ?>
 
-              <li class="list active">
+              <li class="lists">
                 <a class="profile" href=<?php echo  "Chats.php?chat=" . $user['UserID'] ?>><img src="images/faces/face1.jpg" alt="image" class="profile-image"><span class="online"></span>
                 <div class="info">
-                  <p><?php echo $user['FirstName'] ?></p>
+                  <p><?php echo $user['FirstName'] . " " . $user['LastName'] ?></p>
                   <!-- <p>Available</p> -->
                 </div>
                 </a>
@@ -792,8 +792,7 @@ if(!isset($_SESSION["Admin"])){
               </li>
         <?php } // end loop
         }//end if condition
-        ?>
-              
+        ?>        
               
               
               

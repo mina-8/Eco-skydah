@@ -1,0 +1,19 @@
+.upload-btn{
+    position: relative;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.upload-image{
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 0%;
+    transform: translate(-50% , -50%);
+    
+    
+    
+}

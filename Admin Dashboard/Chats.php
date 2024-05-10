@@ -78,11 +78,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       "createat" => $registerdate ,
     ));
 
+    
+
 }
 
   header("location: Chats.php?chat=" . $_GET['chat']);
   exit(); 
 }
+
 
 
 ?>
@@ -291,6 +294,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="container-fluid overflow-hidden py-5 px-lg-0">
             <div class="container feature px-lg-0 py-5">
                 <div class=" col-8 mx-auto border p-3 bg-white"><h6 class="mb-0"><?php echo $row_user['FirstName'] ?></h6></div>
+                
                 <?php
                   // check if chats table has exist chat or not
                   // fetch chat form table chats
@@ -300,7 +304,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                   $count_chat = $fetch_chat->rowCount();
                   // start if condition is users > 0
                 ?>
-                <div class="chat-container col-8 mx-auto border p-3 bg-white">
+                <div class="chat-container col-8 mx-auto border p-3 bg-white" id="chatload">
                     <?php 
                       if($count_chat > 0){
                         // fetch message form table messages
@@ -428,6 +432,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
   
+  <!-- fresh chat every 5 second -->
+  <script>
+    setInterval(function () {
+      location.reload(true)
+    }, 120000);
+    
+
+  </script>
 </body>
 
 </html>

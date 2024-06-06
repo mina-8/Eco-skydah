@@ -18,65 +18,79 @@ if(!isset($_SESSION["Admin"])){
     
 
     $product_id = $_POST['productid'];
-    $product_name = $_POST["product_name"];
-    $description = $_POST["description"];
-    $price = $_POST["price"];
-    $waste_type = $_POST["waste_type"];
-    $quantity = $_POST["quantity"];
-    $registerdate = date("Y-m-d H:i:s");
-    $status = $_POST["status"];
+    $user_id = $_POST['userid'];
+    $PointsRedeemed = '';
+    $RewardType = '';
+    $RedemptionDate = date("Y-m-d H:i:s");
     
     //get product
-    $fetch_product = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID WHERE wasteentries.ProductID=?");
+    $fetch_product = $connect->prepare("SELECT *  FROM `rewards` WHERE UserID=?");
     $fetch_product->execute(array($product_id));
     $row_product = $fetch_product->fetch();
     $count_product = $fetch_product->rowCount();
     if($count_product > 0){
 
-    $name_image = $row_product['Product_image'];
     
-    // check image
-    if($_FILES["image"]["error"] == 0){
+    // create rewards 
+    // $update_rewards = $connect->prepare("UPDATE
+    //                                       rewards
+    //                                       SET
+    //                                       UserID =? , `PointsRedeemed`=? , RewardType=? , RedemptionDate=?
+    //                                       WHERE
+    //                                       UserID=? ");
+    // // sql update product
+    // $update_rewards->execute(array($user_id , $PointsRedeemed , $RewardType ,  $RedemptionDate));
 
-      // delete old image
-      unlink($name_image);
-      // check image to upload
-      $image_size = $_FILES["image"]["size"];
-      $image_temp = $_FILES["image"]["tmp_name"];
-      $image_name = $_FILES["image"]["name"];
-      $image_extintion = explode("." , $image_name);
-      $end_of_extintion =strtolower(end($image_extintion)) ;
-      $main_folder = __DIR__    . "/uploads/";
-      $name_image_temp =  uniqid() . "." . $end_of_extintion;
-      move_uploaded_file($image_temp , $main_folder . $name_image_temp);
-      $name_image = 'uploads/' . $name_image_temp;
-    }
-    
-    // create product 
-    $update_product = $connect->prepare("UPDATE
-                                          products
-                                          SET
-                                        ProductName=? , `Description`=? , Price=? , Product_image=?
-                                        WHERE
-                                        ProductID=? ");
-    // sql update product
-    $update_product->execute(array($product_name , $description , $price ,  $name_image , $product_id));
+      // create notifcation 
+      // $create_product = $connect->prepare("INSERT INTO
+      //                                       notifcations
+      //                                     (User_id , `text` , created_at)
+      //                                     VALUES
+      //                                     (:UserID , :`text` , :created_at ) ");
+      // // sql create wasteentries
+      // $create_product->execute(array(
+      //   "UserID" => $_SESSION['Admin_id'] ,
+      //   "text" => $last_record ,
+      //   "created_at" => $RedemptionDate ,
+      // ));
+      
 
-    
 
-    // update wasteentries 
-    $update_wasteentr = $connect->prepare("UPDATE
-                                          wasteentries
-                                          SET
-                                          WasteType=? , Quantity=? , CollectionTime=? , `Status`=?
-                                          WHERE
-                                          EntryID=?");
-    // sql update wasteentries
-    $update_wasteentr->execute(array($waste_type , $quantity ,$registerdate ,$status ,$row_product['EntryID']));
-
-    header("location: indexProduct.php");
+    header("location: Allorders.php");
     exit(); 
+    }else{
+      
+    // create rewards 
+    // $create_product = $connect->prepare("INSERT INTO
+    //                                       rewards
+    //                                     (UserID , PointsRedeemed , RewardType , RedemptionDate)
+    //                                     VALUES
+    //                                     (:UserID , :PointsRedeemed , :RewardType , :RedemptionDate) ");
+    // // sql create wasteentries
+    // $create_product->execute(array(
+    //   "UserID" => $_SESSION['Admin_id'] ,
+    //   "PointsRedeemed" => $last_record ,
+    //   "RewardType" => $waste_type ,
+    //   "RedemptionDate" => $RedemptionDate ,
+    // ));
+
+    // // create notifcation 
+    // $create_product = $connect->prepare("INSERT INTO
+    //                                       notifcations
+    //                                     (User_id , `text` , created_at)
+    //                                     VALUES
+    //                                     (:UserID , :`text` , :created_at ) ");
+    // // sql create wasteentries
+    // $create_product->execute(array(
+    //   "UserID" => $_SESSION['Admin_id'] ,
+    //   "text" => $last_record ,
+    //   "created_at" => $RedemptionDate ,
+    // ));
+
+    // header("location: Allorders.php");
+    // exit(); 
     }
+    
   }
 
 ?>
@@ -96,7 +110,6 @@ if(!isset($_SESSION["Admin"])){
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="vendors/select2/select2.min.css">
   <link rel="stylesheet" href="vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
@@ -292,8 +305,11 @@ if(!isset($_SESSION["Admin"])){
                 <div class="card-body">
                   <h4 class="card-title">Edit Product</h4>
                   <?php 
-                    $fetch_product = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID WHERE wasteentries.ProductID=?");
-                    $fetch_product->execute(array($_GET['productid']));
+                    $fetch_product = $connect->prepare("SELECT * , products.* , users.* FROM `wasteentries` 
+                    INNER JOIN products ON wasteentries.ProductID = products.ProductID 
+                    INNER JOIN users ON wasteentries.UserID = users.UserID
+                    WHERE wasteentries.ProductID=?");
+                    $fetch_product->execute(array($_GET['orderid']));
                     $row_procudt = $fetch_product->fetchAll();
                     $count_product = $fetch_product->rowCount();
                     // start check product
@@ -306,12 +322,13 @@ if(!isset($_SESSION["Admin"])){
                             Product info
                           </p>
                           <input type="hidden" name="productid" value=<?php echo $product['ProductID']?> />
+                          <input type="hidden" name="userid" value=<?php echo $product['UserID']?> />
                           <div class="row">
                             <div class="col-md-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Product Name</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="product_name" value=<?php echo $product['ProductName'] ?> />
+                                  <div class="col-sm-3 col-form-label"><?php echo $product['ProductName'] ?></div>
                                 </div>
                               </div>
                             </div>
@@ -319,7 +336,7 @@ if(!isset($_SESSION["Admin"])){
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Description</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="description" value=<?php echo $product['Description'] ?> />
+                                  <div class="col-sm-3 col-form-label"><?php echo $product['Description'] ?></div>
                                 </div>
                               </div>
                             </div>
@@ -327,26 +344,16 @@ if(!isset($_SESSION["Admin"])){
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">price</label>
                                 <div class="col-sm-9">
-                                  <input type="number" class="form-control" name="price" value=<?php echo $product['Price'] ?> />
+                                  <div class="col-sm-3 col-form-label"><?php echo $product['Price'] . " pound" ?></div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">image</label>
-                                <div class="col-sm-9">
-                                  <button type="button" class="form-control btn btn-danger btn-icon-text upload-btn">
-                                    <i class="ti-upload btn-icon-prepend">Upload image</i>
-                                    <input type="file"  class="upload-image" name="image" />
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
+                            
                             <div class="col-md-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">waste type</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="waste_type" value=<?php echo $product['WasteType'] ?> />
+                                  <div class="col-sm-3 col-form-label"><?php echo $product['WasteType'] ?></div>
                                 </div>
                               </div>
                             </div>
@@ -354,7 +361,7 @@ if(!isset($_SESSION["Admin"])){
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">quantity</label>
                                 <div class="col-sm-9">
-                                  <input type="number" class="form-control" name="quantity" value=<?php echo $product['Quantity'] ?> />
+                                  <div class="col-sm-3 col-form-label"><?php echo $product['Quantity'] ?></div>
                                 </div>
                               </div>
                             </div>
@@ -362,7 +369,15 @@ if(!isset($_SESSION["Admin"])){
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">status</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="status" value=<?php echo $product['Status'] ?> />
+                                  <div class="col-sm-3 col-form-label"><?php echo $product['Status'] ?></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">user name</label>
+                                <div class="col-sm-9">
+                                  <div class="col-sm-3 col-form-label"><?php echo $product['FirstName'] ?></div>
                                 </div>
                               </div>
                             </div>
@@ -370,7 +385,7 @@ if(!isset($_SESSION["Admin"])){
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"></label>
                                 <div class="col-sm-9">
-                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="create" />
+                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="rewards" />
                                 </div>
                               </div>
                             </div>

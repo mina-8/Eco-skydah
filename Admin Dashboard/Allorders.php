@@ -12,105 +12,35 @@ if(!isset($_SESSION["Admin"])){
   exit();
 }
 
-
-  // get request from form php self
-  if($_SERVER["REQUEST_METHOD"] == "POST"){
-    
-
-    $product_id = $_POST['productid'];
-    $product_name = $_POST["product_name"];
-    $description = $_POST["description"];
-    $price = $_POST["price"];
-    $waste_type = $_POST["waste_type"];
-    $quantity = $_POST["quantity"];
-    $registerdate = date("Y-m-d H:i:s");
-    $status = $_POST["status"];
-    
-    //get product
-    $fetch_product = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID WHERE wasteentries.ProductID=?");
-    $fetch_product->execute(array($product_id));
-    $row_product = $fetch_product->fetch();
-    $count_product = $fetch_product->rowCount();
-    if($count_product > 0){
-
-    $name_image = $row_product['Product_image'];
-    
-    // check image
-    if($_FILES["image"]["error"] == 0){
-
-      // delete old image
-      unlink($name_image);
-      // check image to upload
-      $image_size = $_FILES["image"]["size"];
-      $image_temp = $_FILES["image"]["tmp_name"];
-      $image_name = $_FILES["image"]["name"];
-      $image_extintion = explode("." , $image_name);
-      $end_of_extintion =strtolower(end($image_extintion)) ;
-      $main_folder = __DIR__    . "/uploads/";
-      $name_image_temp =  uniqid() . "." . $end_of_extintion;
-      move_uploaded_file($image_temp , $main_folder . $name_image_temp);
-      $name_image = 'uploads/' . $name_image_temp;
-    }
-    
-    // create product 
-    $update_product = $connect->prepare("UPDATE
-                                          products
-                                          SET
-                                        ProductName=? , `Description`=? , Price=? , Product_image=?
-                                        WHERE
-                                        ProductID=? ");
-    // sql update product
-    $update_product->execute(array($product_name , $description , $price ,  $name_image , $product_id));
-
-    
-
-    // update wasteentries 
-    $update_wasteentr = $connect->prepare("UPDATE
-                                          wasteentries
-                                          SET
-                                          WasteType=? , Quantity=? , CollectionTime=? , `Status`=?
-                                          WHERE
-                                          EntryID=?");
-    // sql update wasteentries
-    $update_wasteentr->execute(array($waste_type , $quantity ,$registerdate ,$status ,$row_product['EntryID']));
-
-    header("location: indexProduct.php");
-    exit(); 
-    }
-  }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
-  <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
+  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
-  <!-- new file css upload file button -->
-  <link rel="stylesheet" href="css/uploadbtn/upload-btn.css">
   
-  <!-- endinject -->
+  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="css/chats/chats.css">
+  
   <link rel="shortcut icon" href="images/favicon.png" />
-</head>
 
+
+  
+  
+</head>
 <body>
   <div class="container-scroller">
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <!-- this change header  -->
         <a class="navbar-brand brand-logo mr-5" href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"]?>>ECO Recycling</a>
         <a class="navbar-brand brand-logo-mini" href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"]?>><img src="images/eco-icon.png" alt="logo"/></a>
       </div>
@@ -216,6 +146,7 @@ if(!isset($_SESSION["Admin"])){
               </a>
             </div>
           </li>
+          
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>
@@ -226,7 +157,7 @@ if(!isset($_SESSION["Admin"])){
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link"href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"]?>>
+            <a class="nav-link" href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"]?>>
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -239,8 +170,8 @@ if(!isset($_SESSION["Admin"])){
             </a>
             <div class="collapse" id="ui-user">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="indexUser.php">All Users</a></li>
-                <li class="nav-item"> <a class="nav-link" href="CreateUser.php">Create New User</a></li>
+                <li class="nav-item"> <a class="nav-link" href=<?php echo "indexUser.php?user=" . $_SESSION["Admin"]?>>All Users</a></li>
+                <li class="nav-item"> <a class="nav-link" href=<?php echo "CreateUser.php?user=" . $_SESSION["Admin"]?>>Create New User</a></li>
               </ul>
             </div>
           </li>
@@ -284,122 +215,90 @@ if(!isset($_SESSION["Admin"])){
           </li>
         </ul>
       </nav>
-      <div class="main-panel">      
+
+
+      <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-12 grid-margin">
+            <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Edit Product</h4>
-                  <?php 
-                    $fetch_product = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID WHERE wasteentries.ProductID=?");
-                    $fetch_product->execute(array($_GET['productid']));
-                    $row_procudt = $fetch_product->fetchAll();
-                    $count_product = $fetch_product->rowCount();
-                    // start check product
-                    if($count_product > 0){?>
-                      <form class="form-sample"  action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST" enctype="multipart/form-data">
-
-                      <?php 
-                      foreach($row_procudt as $product){?>
-                          <p class="card-description">
-                            Product info
-                          </p>
-                          <input type="hidden" name="productid" value=<?php echo $product['ProductID']?> />
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Product Name</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="product_name" value=<?php echo $product['ProductName'] ?> />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Description</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="description" value=<?php echo $product['Description'] ?> />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">price</label>
-                                <div class="col-sm-9">
-                                  <input type="number" class="form-control" name="price" value=<?php echo $product['Price'] ?> />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">image</label>
-                                <div class="col-sm-9">
-                                  <button type="button" class="form-control btn btn-danger btn-icon-text upload-btn">
-                                    <i class="ti-upload btn-icon-prepend">Upload image</i>
-                                    <input type="file"  class="upload-image" name="image" />
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">waste type</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="waste_type" value=<?php echo $product['WasteType'] ?> />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">quantity</label>
-                                <div class="col-sm-9">
-                                  <input type="number" class="form-control" name="quantity" value=<?php echo $product['Quantity'] ?> />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">status</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="status" value=<?php echo $product['Status'] ?> />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label"></label>
-                                <div class="col-sm-9">
-                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="create" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                    <?php } // end for loop ?>
-                    <?php  } // end if main conition  ?>
-                  </form>
+                  <p class="card-title mb-0">Top Products</p>
+                  <div class="table-responsive">
+                    <table class="table table-striped table-borderless">
+                      <thead>
+                        <tr>
+                          <th>Product</th>
+                          <th>Price</th>
+                          <th>Date</th>
+                          <th>Quantity</th>
+                          <th>Status</th>
+                          <th>Image</th>
+                          <th>Options</th>
+                        </tr>  
+                      </thead>
+                      <tbody>
+                        <?php 
+                          // fetch product form wasteentries table 
+                          $fetch_products = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID");
+                          $fetch_products->execute();
+                          $row_product = $fetch_products->fetchAll();
+                          $count_product = $fetch_products->rowCount();
+                          // start if condition to check if product is exist 
+                          if($count_product > 0){
+                            foreach($row_product as $product){?>
+                              <tr>
+                                <td><?php echo $product['ProductName'] ?></td>
+                                <td class="font-weight-bold"><?php echo "$". $product['Price']?></td>
+                                <td><?php echo $product['CollectionTime'] ?></td>
+                                <td class="font-weight-medium"><div class="badge badge-success"><?php echo $product['Quantity'] ?></div></td>
+                                <td class="font-weight-medium"><div class="badge badge-success"><?php echo $product['Status'] ?></div></td>
+                                <td><img src=<?php echo $product['Product_image'] ?>> </td>
+                                <td>
+                                  
+                                  <!-- <button type="button" class="btn btn-danger" onclick="MyAlert(<?php echo $product['ProductID'] ?>)">Danger</button> -->
+                                  <a class="btn btn-info" href=<?php echo "Detailorder.php?orderid=" . $product['ProductID']?>>details</a>
+                                </td>
+                                
+                              </tr>
+                            
+                            
+                            <?php } // end for
+                                                       
+                          } // end if
+                        ?>
+                        
+                        
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>            
-          </div>
+            </div>
+            </div>
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:../../partials/_footer.html -->
+        <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
           </div>
-        </footer>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
+          </div>
+        </footer> 
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
-    </div>
+      
+
+      
+    </div>   
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-    
+
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
   <!-- endinject -->
@@ -421,11 +320,12 @@ if(!isset($_SESSION["Admin"])){
   <script src="js/dashboard.js"></script>
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
+  
 </body>
 
 </html>
 
-
+i
 <!-- this line to end session -->
 <?php
 ob_end_flush();

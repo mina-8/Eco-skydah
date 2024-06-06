@@ -26,6 +26,7 @@ if(!isset($_SESSION["Admin"])){
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="css/chats/chats.css">
   
   <link rel="shortcut icon" href="images/favicon.png" />
@@ -62,6 +63,22 @@ if(!isset($_SESSION["Admin"])){
           <li class="nav-item">
             <div class="mx-0" style="margin-right: 5px;"><?php echo $_SESSION['Admin_name'] ?></div>
           </li>
+          <li class="nav-item">
+            <div class="mx-0" style="margin-right: 5px;">
+            points : 
+          <?php 
+          $fetch_points = $connect->prepare("SELECT PointsRedeemed FROM `rewards` WHERE UserID=?");
+          $fetch_points->execute(array($_SESSION['Admin_id']));
+          $row_points = $fetch_points->fetch();
+          $count_points = $fetch_points->rowCount();
+          if($count_points > 0){
+            echo $row_points['PointsRedeemed'];
+          }else{
+            echo "0";
+          }
+          ?>
+          </div>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
@@ -69,6 +86,25 @@ if(!isset($_SESSION["Admin"])){
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+              
+              <a class="dropdown-item preview-item">
+                
+                <div class="preview-item-content">
+                  
+                  <?php 
+                  $fetch_notfication = $connect->prepare("SELECT * FROM notifcations WHERE User_id=?");
+                  $fetch_notfication->execute(array($_SESSION["Admin_id"]));
+                  $row_notfi = $fetch_notfication->fetchAll();
+                  $count_notfi = $fetch_notfication->rowCount();
+                  if($count_notfi > 0){
+                    foreach($row_notfi as $notfi){?>
+                     <h6 class="preview-subject font-weight-normal"> <?php echo $notfi['text']?> </h6>
+                  <?php }
+                  }
+                  ?>
+                  
+                </div>
+              </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-success">
@@ -164,6 +200,31 @@ if(!isset($_SESSION["Admin"])){
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="indexProduct.php">All Products</a></li>
                 <li class="nav-item"> <a class="nav-link" href="CreateProduct.php">Create New Product</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Orders</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-order">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="Allorders.php">All Orders</a></li>
+                
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-chat" aria-expanded="false" aria-controls="ui-product">
+              <i class="mdi mdi-wechat icon-layout menu-icon"></i>
+              <span class="menu-title">Chats</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-chat">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="MainChat.php">all chats</a></li>
               </ul>
             </div>
           </li>
@@ -767,37 +828,6 @@ if(!isset($_SESSION["Admin"])){
       <!-- main-panel ends -->
       
 
-      <nav class="sidebar-right sidebar-offcanvas" id="sidebar">
-      <ul class="chat-list">
-        <?php  
-        // fetch user form table users
-        $fetch_user = $connect->prepare("SELECT * FROM users WHERE `UserID` !=?");
-        $fetch_user->execute(array($_SESSION['Admin_id']));
-        $row_user = $fetch_user->fetchAll();
-        $count_user = $fetch_user->rowCount();
-        // start if condition is users > 0
-        if($count_user > 0){ 
-          // start for loop of users
-          foreach($row_user as $user){
-        ?>
-
-              <li class="lists">
-                <a class="profile" href=<?php echo  "Chats.php?chat=" . $user['UserID'] ?>><img src="images/faces/face1.jpg" alt="image" class="profile-image"><span class="online"></span>
-                <div class="info">
-                  <p><?php echo $user['FirstName'] . " " . $user['LastName'] ?></p>
-                  <!-- <p>Available</p> -->
-                </div>
-                </a>
-                <!-- <small class="text-muted my-auto">19 min</small> -->
-              </li>
-        <?php } // end loop
-        }//end if condition
-        ?>        
-              
-              
-              
-      </ul>
-      </nav>
       
     </div>   
     <!-- page-body-wrapper ends -->

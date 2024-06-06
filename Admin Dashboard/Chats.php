@@ -180,6 +180,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+              
+              <a class="dropdown-item preview-item">
+                
+                <div class="preview-item-content">
+                  
+                  <?php 
+                  $fetch_notfication = $connect->prepare("SELECT * FROM notifcations WHERE User_id=?");
+                  $fetch_notfication->execute(array($_SESSION["Admin_id"]));
+                  $row_notfi = $fetch_notfication->fetchAll();
+                  $count_notfi = $fetch_notfication->rowCount();
+                  if($count_notfi > 0){
+                    foreach($row_notfi as $notfi){?>
+                     <h6 class="preview-subject font-weight-normal"> <?php echo $notfi['text']?> </h6>
+                  <?php }
+                  }
+                  ?>
+                  
+                </div>
+              </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-success">
@@ -275,6 +294,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="indexProduct.php">All Products</a></li>
                 <li class="nav-item"> <a class="nav-link" href="CreateProduct.php">Create New Product</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Orders</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-order">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="Allorders.php">All Orders</a></li>
+                
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-chat" aria-expanded="false" aria-controls="ui-product">
+              <i class="mdi mdi-wechat icon-layout menu-icon"></i>
+              <span class="menu-title">Chats</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-chat">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="MainChat.php">all chats</a></li>
               </ul>
             </div>
           </li>

@@ -17,78 +17,78 @@ if(!isset($_SESSION["Admin"])){
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     
 
-    $product_id = $_POST['productid'];
+    $RewardType = $_POST['wastetype'];
     $user_id = $_POST['userid'];
-    $PointsRedeemed = '';
-    $RewardType = '';
+    $PointsRedeemed = $_POST['quantity'] * $_POST['price'];
     $RedemptionDate = date("Y-m-d H:i:s");
-    
+    $textnotfication  = "تمت اضافة " . strval($PointsRedeemed) . "نقطة";
     //get product
     $fetch_product = $connect->prepare("SELECT *  FROM `rewards` WHERE UserID=?");
-    $fetch_product->execute(array($product_id));
+    $fetch_product->execute(array($user_id));
     $row_product = $fetch_product->fetch();
     $count_product = $fetch_product->rowCount();
     if($count_product > 0){
 
     
     // create rewards 
-    // $update_rewards = $connect->prepare("UPDATE
-    //                                       rewards
-    //                                       SET
-    //                                       UserID =? , `PointsRedeemed`=? , RewardType=? , RedemptionDate=?
-    //                                       WHERE
-    //                                       UserID=? ");
-    // // sql update product
-    // $update_rewards->execute(array($user_id , $PointsRedeemed , $RewardType ,  $RedemptionDate));
-
-      // create notifcation 
-      // $create_product = $connect->prepare("INSERT INTO
-      //                                       notifcations
-      //                                     (User_id , `text` , created_at)
-      //                                     VALUES
-      //                                     (:UserID , :`text` , :created_at ) ");
-      // // sql create wasteentries
-      // $create_product->execute(array(
-      //   "UserID" => $_SESSION['Admin_id'] ,
-      //   "text" => $last_record ,
-      //   "created_at" => $RedemptionDate ,
-      // ));
-      
-
+    $create_rewards = $connect->prepare("INSERT INTO
+                                              rewards
+                                            (UserID , PointsRedeemed , RewardType , RedemptionDate)
+                                            VALUES
+                                            (:UserID , :PointsRedeemed , :RewardType , :RedemptionDate) ");
+    // sql create wasteentries
+    $create_rewards->execute(array(
+    "UserID" => $user_id ,
+    "PointsRedeemed" => $PointsRedeemed ,
+    "RewardType" => $RewardType ,
+    "RedemptionDate" => $RedemptionDate ,
+    ));
+    
+    // create notfication
+    $create_notfication = $connect->prepare("INSERT INTO
+                                              notifcations
+                                              (User_id , textnotfication , created_at)
+                                              VALUES
+                                              (:userid , :textnotfi , :created_at)");
+    $create_notfication->execute(array(
+      "userid" => $user_id,
+      "textnotfi" => $textnotfication,
+      "created_at" => $RedemptionDate
+    ));
 
     header("location: Allorders.php");
     exit(); 
     }else{
-      
+    
+    
     // create rewards 
-    // $create_product = $connect->prepare("INSERT INTO
-    //                                       rewards
-    //                                     (UserID , PointsRedeemed , RewardType , RedemptionDate)
-    //                                     VALUES
-    //                                     (:UserID , :PointsRedeemed , :RewardType , :RedemptionDate) ");
-    // // sql create wasteentries
-    // $create_product->execute(array(
-    //   "UserID" => $_SESSION['Admin_id'] ,
-    //   "PointsRedeemed" => $last_record ,
-    //   "RewardType" => $waste_type ,
-    //   "RedemptionDate" => $RedemptionDate ,
-    // ));
+    $create_rewards = $connect->prepare("INSERT INTO
+                                              rewards
+                                            (UserID , PointsRedeemed , RewardType , RedemptionDate)
+                                            VALUES
+                                            (:UserID , :PointsRedeemed , :RewardType , :RedemptionDate) ");
+    // sql create wasteentries
+    $create_rewards->execute(array(
+    "UserID" => $user_id ,
+    "PointsRedeemed" => $PointsRedeemed ,
+    "RewardType" => $RewardType ,
+    "RedemptionDate" => $RedemptionDate ,
+    ));
+    
+    // create notfication
+    $create_notfication = $connect->prepare("INSERT INTO
+                                              notifcations
+                                              (User_id , textnotfication , created_at)
+                                              VALUES
+                                              (:userid , :textnotfi , :created_at)");
+    $create_notfication->execute(array(
+      "userid" => $user_id,
+      "textnotfi" => $textnotfication,
+      "created_at" => $RedemptionDate
+    ));
 
-    // // create notifcation 
-    // $create_product = $connect->prepare("INSERT INTO
-    //                                       notifcations
-    //                                     (User_id , `text` , created_at)
-    //                                     VALUES
-    //                                     (:UserID , :`text` , :created_at ) ");
-    // // sql create wasteentries
-    // $create_product->execute(array(
-    //   "UserID" => $_SESSION['Admin_id'] ,
-    //   "text" => $last_record ,
-    //   "created_at" => $RedemptionDate ,
-    // ));
-
-    // header("location: Allorders.php");
-    // exit(); 
+    header("location: Allorders.php");
+    exit(); 
     }
     
   }
@@ -321,7 +321,9 @@ if(!isset($_SESSION["Admin"])){
                           <p class="card-description">
                             Product info
                           </p>
-                          <input type="hidden" name="productid" value=<?php echo $product['ProductID']?> />
+                          <input type="hidden" name="wastetype" value=<?php echo $product['WasteType']?> />
+                          <input type="hidden" name="price" value=<?php echo $product['Price']?> />
+                          <input type="hidden" name="quantity" value=<?php echo $product['Quantity']?> />
                           <input type="hidden" name="userid" value=<?php echo $product['UserID']?> />
                           <div class="row">
                             <div class="col-md-6">
@@ -385,7 +387,7 @@ if(!isset($_SESSION["Admin"])){
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"></label>
                                 <div class="col-sm-9">
-                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="rewards" />
+                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="add rewards" />
                                 </div>
                               </div>
                             </div>

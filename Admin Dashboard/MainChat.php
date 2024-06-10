@@ -321,8 +321,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <ul class="chat-list">
         <?php  
         // fetch user form table users
-        $fetch_user = $connect->prepare("SELECT * FROM users WHERE `UserID` !=?");
-        $fetch_user->execute(array($_SESSION['Admin_id']));
+        $fetch_user = $connect->prepare("SELECT * FROM users WHERE  `UserID` !=? AND  `Type` !=?");
+        $fetch_user->execute(array($_SESSION['Admin_id'] , 'Admin'));
         $row_user = $fetch_user->fetchAll();
         $count_user = $fetch_user->rowCount();
         // start if condition is users > 0

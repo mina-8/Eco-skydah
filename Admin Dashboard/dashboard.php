@@ -67,12 +67,12 @@ if(!isset($_SESSION["Admin"])){
             <div class="mx-0" style="margin-right: 5px;">
             points : 
           <?php 
-          $fetch_points = $connect->prepare("SELECT PointsRedeemed FROM `rewards` WHERE UserID=?");
+          $fetch_points = $connect->prepare("SELECT SUM(PointsRedeemed) AS pointssum FROM `rewards` WHERE UserID=?");
           $fetch_points->execute(array($_SESSION['Admin_id']));
           $row_points = $fetch_points->fetch();
           $count_points = $fetch_points->rowCount();
           if($count_points > 0){
-            echo $row_points['PointsRedeemed'];
+            echo $row_points['pointssum'];
           }else{
             echo "0";
           }
@@ -98,7 +98,7 @@ if(!isset($_SESSION["Admin"])){
                   $count_notfi = $fetch_notfication->rowCount();
                   if($count_notfi > 0){
                     foreach($row_notfi as $notfi){?>
-                     <h6 class="preview-subject font-weight-normal"> <?php echo $notfi['text']?> </h6>
+                     <h6 class="preview-subject font-weight-normal"> <?php echo $notfi['textnotfication']?> </h6>
                   <?php }
                   }
                   ?>

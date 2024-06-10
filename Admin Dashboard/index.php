@@ -1,24 +1,24 @@
-<?php 
+<?php
 include "connection/connection.php";
 ob_start();
 session_start();
 
 // check for type user in table user
-if(isset($_SESSION["Admin"])){
+if (isset($_SESSION["Admin"])) {
   header("location: dashboard.php");
   exit();
 }
 
 // check if not tabel users has no admin
 $check_admin = $connect->prepare("SELECT UserID FROM users WHERE `Type`=? AND UserID=?");
-$check_admin->execute(array("Admin" , 1));
+$check_admin->execute(array("Admin", 1));
 $row_admin = $check_admin->fetch();
 $count_admin = $check_admin->rowCount();
-if($count_admin > 0){
+if ($count_admin > 0) {
 
   // get request from form php self
-  if($_SERVER["REQUEST_METHOD"] == "POST"){
-    
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $email = $_POST["email"];
     $password = $_POST["password"];
     // sql in database of users table
@@ -34,26 +34,26 @@ if($count_admin > 0){
     $sql_statement->execute(array($email));
     $row = $sql_statement->fetch();
     $count = $sql_statement->rowCount();
-    if($count > 0){
-      if(password_verify($password , $row["Password"])){
-          $_SESSION["Admin"] = $row["Type"];
-          $_SESSION["Admin_id"] = $row["UserID"];
-          $_SESSION["Admin_name"] = $row["FirstName"];
-          header("location: dashboard.php?user=" . $_SESSION["Admin"]);
-          exit();
-          
-        }
+    if ($count > 0) {
+      if (password_verify($password, $row["Password"])) {
+        $_SESSION["Admin"] = $row["Type"];
+        $_SESSION["Admin_id"] = $row["UserID"];
+        $_SESSION["Admin_name"] = $row["FirstName"];
+        header("location: dashboard.php?user=" . $_SESSION["Admin"]);
+        exit();
+
+      }
     }
-    
+
   }
-}else{
-  if($row_admin["UserID"] !== 1){
+} else {
+  if ($row_admin["UserID"] !== 1) {
 
     // create admin by default if not admin in table users
     $firstname = "Admin";
     $lastname = "my admin";
     $email = "admin@mail.com";
-    $password = password_hash("password" , PASSWORD_DEFAULT);
+    $password = password_hash("password", PASSWORD_DEFAULT);
     $type = "Admin";
     $registerdate = date("Y-m-d H:i:s");
     $points = 0;
@@ -63,17 +63,19 @@ if($count_admin > 0){
                                           VALUES
                                           (:firstname , :lastname , :email , :pass , :types , :registerdate , :points) ");
     // sql create admin
-    $create_admin->execute(array(
-      "firstname" => $firstname ,
-      "lastname" => $lastname ,
-      "email" => $email ,
-      "pass" => $password ,
-      "types" => $type ,
-      "registerdate" => $registerdate ,
-      "points" => $points
-    ));
+    $create_admin->execute(
+      array(
+        "firstname" => $firstname,
+        "lastname" => $lastname,
+        "email" => $email,
+        "pass" => $password,
+        "types" => $type,
+        "registerdate" => $registerdate,
+        "points" => $points
+      )
+    );
   }
-  
+
 }
 
 ?>
@@ -111,18 +113,22 @@ if($count_admin > 0){
               </div>
               <h4>Hello! let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form class="pt-3" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post" enctype="application/x-www-form-urlencoded">
+              <form class="pt-3" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post"
+                enctype="application/x-www-form-urlencoded">
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" name="email" placeholder="email" Required>
+                  <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" name="email"
+                    placeholder="email" Required>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" name="password" placeholder="Password" Required>
+                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" name="password"
+                    placeholder="Password" Required>
                 </div>
                 <div class="mt-3">
-                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="Login">
+                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit"
+                    value="Login">
                   <!-- <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="index.html">SIGN IN</a> -->
                 </div>
-                
+
                 <div class="my-2 d-flex justify-content-between align-items-center">
                   <div class="form-check">
                     <label class="form-check-label text-muted">

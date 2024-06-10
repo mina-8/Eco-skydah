@@ -1,4 +1,3 @@
-
 <!-- start session to check login -->
 <?php
 
@@ -7,7 +6,7 @@ ob_start();
 session_start();
 
 // check for type user in table user
-if(!isset($_SESSION["Admin"])){
+if (!isset($_SESSION["Admin"])) {
   header("location: index.php");
   exit();
 }
@@ -35,14 +34,15 @@ if(!isset($_SESSION["Admin"])){
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
-  
+
 </head>
+
 <body>
   <div class="container-scroller">
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo mr-5" href="index.php">ECO Recycling</a>
-        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="images/eco-icon.png" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="images/eco-icon.png" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -56,38 +56,41 @@ if(!isset($_SESSION["Admin"])){
                   <i class="icon-search"></i>
                 </span>
               </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
+              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
+                aria-label="search" aria-describedby="search">
             </div>
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-        <li class="nav-item">
+          <li class="nav-item">
             <div class="mx-0" style="margin-right: 5px;"><?php echo $_SESSION['Admin_name'] ?></div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
+              data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
               <span class="count"></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+              aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              
+
               <a class="dropdown-item preview-item">
-                
+
                 <div class="preview-item-content">
-                  
-                  <?php 
+
+                  <?php
                   $fetch_notfication = $connect->prepare("SELECT * FROM notifcations WHERE User_id=?");
                   $fetch_notfication->execute(array($_SESSION["Admin_id"]));
                   $row_notfi = $fetch_notfication->fetchAll();
                   $count_notfi = $fetch_notfication->rowCount();
-                  if($count_notfi > 0){
-                    foreach($row_notfi as $notfi){?>
-                     <h6 class="preview-subject font-weight-normal"> <?php echo $notfi['text']?> </h6>
-                  <?php }
+                  if ($count_notfi > 0) {
+                    foreach ($row_notfi as $notfi) { ?>
+                      <h6 class="preview-subject font-weight-normal"> <?php echo $notfi['text'] ?> </h6>
+                    <?php }
                   }
                   ?>
-                  
+
                 </div>
               </a>
               <a class="dropdown-item preview-item">
@@ -133,7 +136,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/eco-icon.png" alt="profile"/>
+              <img src="images/eco-icon.png" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -147,7 +150,8 @@ if(!isset($_SESSION["Admin"])){
             </div>
           </li>
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+          data-toggle="offcanvas">
           <span class="icon-menu"></span>
         </button>
       </div>
@@ -175,7 +179,8 @@ if(!isset($_SESSION["Admin"])){
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
+            <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false"
+              aria-controls="ui-product">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Products</span>
               <i class="menu-arrow"></i>
@@ -188,7 +193,8 @@ if(!isset($_SESSION["Admin"])){
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
+            <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false"
+              aria-controls="ui-product">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Orders</span>
               <i class="menu-arrow"></i>
@@ -196,7 +202,7 @@ if(!isset($_SESSION["Admin"])){
             <div class="collapse" id="ui-order">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="Allorders.php">All Orders</a></li>
-                
+
               </ul>
             </div>
           </li>
@@ -232,37 +238,42 @@ if(!isset($_SESSION["Admin"])){
                           <th>Status</th>
                           <th>Image</th>
                           <th>Options</th>
-                        </tr>  
+                        </tr>
                       </thead>
                       <tbody>
-                        <?php 
-                          // fetch product form wasteentries table 
-                          $fetch_products = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID");
-                          $fetch_products->execute();
-                          $row_product = $fetch_products->fetchAll();
-                          $count_product = $fetch_products->rowCount();
-                          // start if condition to check if product is exist 
-                          if($count_product > 0){
-                            foreach($row_product as $product){?>
-                              <tr>
-                                <td><?php echo $product['ProductName'] ?></td>
-                                <td class="font-weight-bold"><?php echo "$". $product['Price']?></td>
-                                <td><?php echo $product['CollectionTime'] ?></td>
-                                <td class="font-weight-medium"><div class="badge badge-success"><?php echo $product['Quantity'] ?></div></td>
-                                <td class="font-weight-medium"><div class="badge badge-success"><?php echo $product['Status'] ?></div></td>
-                                <td><img src=<?php echo $product['Product_image'] ?>> </td>
-                                <td>
-                                  
-                                  <button type="button" class="btn btn-danger" onclick="MyAlert(<?php echo $product['ProductID'] ?>)">Danger</button>
-                                  <a class="btn btn-info" href=<?php echo "EditProduct.php?productid=" . $product['ProductID']?>>Edit</a>
-                                </td>
-                                
-                              </tr>
-                            
-                            
-                            <?php } // end for
-                                                       
-                          } // end if
+                        <?php
+                        // fetch product form wasteentries table 
+                        $fetch_products = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID");
+                        $fetch_products->execute();
+                        $row_product = $fetch_products->fetchAll();
+                        $count_product = $fetch_products->rowCount();
+                        // start if condition to check if product is exist 
+                        if ($count_product > 0) {
+                          foreach ($row_product as $product) { ?>
+                            <tr>
+                              <td><?php echo $product['ProductName'] ?></td>
+                              <td class="font-weight-bold"><?php echo "$" . $product['Price'] ?></td>
+                              <td><?php echo $product['CollectionTime'] ?></td>
+                              <td class="font-weight-medium">
+                                <div class="badge badge-success"><?php echo $product['Quantity'] ?></div>
+                              </td>
+                              <td class="font-weight-medium">
+                                <div class="badge badge-success"><?php echo $product['Status'] ?></div>
+                              </td>
+                              <td><img src=<?php echo $product['Product_image'] ?>> </td>
+                              <td>
+
+                                <button type="button" class="btn btn-danger"
+                                  onclick="MyAlert(<?php echo $product['ProductID'] ?>)">Danger</button>
+                                <a class="btn btn-info" href=<?php echo "EditProduct.php?productid=" . $product['ProductID'] ?>>Edit</a>
+                              </td>
+
+                            </tr>
+
+
+                          <?php } // end for
+                        
+                        } // end if
                         ?>
                         <!-- <tr>
                           <td>Search Engine Marketing</td>
@@ -283,30 +294,34 @@ if(!isset($_SESSION["Admin"])){
                           <td>01 Nov 2018</td>
                           <td class="font-weight-medium"><div class="badge badge-danger">Cancelled</div></td>
                         </tr> -->
-                        
+
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
             </div>
-            </div>
+          </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021. Premium <a
+                href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.
+              All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
+                class="ti-heart text-danger ml-1"></i></span>
           </div>
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a
+                href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
           </div>
-        </footer> 
+        </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
-    </div>   
+    </div>
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
@@ -333,31 +348,30 @@ if(!isset($_SESSION["Admin"])){
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
 
-  
+
   <!-- alart function delete -->
   <script>
 
-    function MyAlert(product_id){
-      if(confirm("Are you sure to delete") == true){
+    function MyAlert(product_id) {
+      if (confirm("Are you sure to delete") == true) {
         let data_form = new FormData();
-        data_form.append("deleteproduct" , "deleteproduct");
-        data_form.append("productid" , product_id);
+        data_form.append("deleteproduct", "deleteproduct");
+        data_form.append("productid", product_id);
         $.ajax({
-          url : 'Fetchdata.php',
-          method : "POST",
-          data :data_form,
-          dataType : false,
-          contentType : false,
-          processData : false,
-          success :function(data){
+          url: 'Fetchdata.php',
+          method: "POST",
+          data: data_form,
+          dataType: false,
+          contentType: false,
+          processData: false,
+          success: function (data) {
             location.reload()
           }
         })
       }
-      
+
     }
   </script>
 </body>
 
 </html>
-

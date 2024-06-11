@@ -216,7 +216,7 @@ if(!isset($_SESSION["Admin"])){
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title">Advanced Table</p>
+                  <p class="card-title">All Users</p>
                   <div class="row">
                     <div class="col-12">
                       <div class="table-responsive">
@@ -252,6 +252,7 @@ if(!isset($_SESSION["Admin"])){
                                   </td>
                                   <td class="sorting_1">
                                     <?php echo $user['FirstName'] . " " . $user['LastName']?>
+                                    <span class="badge btn-info"><?php echo $user['Type']?></span>
                                   </td>
                                   <td class="sorting_1">
                                     <?php echo $user['Email'] ?>
@@ -263,11 +264,9 @@ if(!isset($_SESSION["Admin"])){
                                     <?php echo $user['RegistrationDate'] ?>
                                   </td>
                                   <td>
-                                    <!-- the confirm function js find in end page -->
-                                  <button type="button" class="btn btn-danger" onclick="MyAlert(<?php echo $user['UserID']?>)">Delete</button>
-                                  <a class="btn btn-info" href=<?php echo "EditProduct.php?productid=" . $user['UserID']?>>Edit</a>
-                                    
-                                  </td>
+                              <button type="button" class="btn btn-danger btn-sm" onclick="MyAlert(<?php echo htmlspecialchars($user['UserID']); ?>)">Delete</button>
+                              <a class="btn btn-info btn-sm" href="EditProduct.php?productid=<?php echo urlencode($user['UserID']); ?>">Edit</a>
+                            </td>
                                 </tr> 
 
                               <?php 

@@ -12,6 +12,6 @@ try{
     
 }
 
-catch(PDOException $e){
+catch(PDOException $e){                  
     echo "faild to connect" .$e->getMessage();
 }

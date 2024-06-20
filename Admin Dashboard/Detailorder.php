@@ -291,7 +291,7 @@ if(!isset($_SESSION["Admin"])){
             </a>
             <div class="collapse" id="ui-chat">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="MainChat.php">all chats</a></li>
+                <li class="nav-item"> <a class="nav-link" href="MainChat.php">All Chats</a></li>
               </ul>
             </div>
           </li>

@@ -318,7 +318,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </a>
             <div class="collapse" id="ui-chat">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="MainChat.php">all chats</a></li>
+                <li class="nav-item"> <a class="nav-link" href="MainChat.php">All Chats</a></li>
               </ul>
             </div>
           </li>
@@ -337,7 +337,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
         <div class="container-fluid overflow-hidden py-5 px-lg-0">
             <div class="container feature px-lg-0 py-5">
-                <div class=" col-8 mx-auto border p-3 bg-white"><h6 class="mb-0"><?php echo $row_user['FirstName'] ?></h6></div>
+                <div class=" col-8 mx-auto border p-3 bg-white"><h6 class="mb-0"><?php echo $row_user['FirstName'].' '.$row_user['LastName'] ?></h6></div>
                 
                 <?php
                   // check if chats table has exist chat or not

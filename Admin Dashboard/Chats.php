@@ -480,7 +480,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <script>
     setInterval(function () {
       location.reload(true)
-    }, 120000);
+    }, 12000);
     
 
   </script>

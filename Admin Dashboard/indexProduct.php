@@ -38,10 +38,11 @@ if(!isset($_SESSION["Admin"])){
 </head>
 <body>
   <div class="container-scroller">
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+  <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.php">ECO Recycling</a>
-        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="images/eco-icon.png" alt="logo"/></a>
+        <!-- this change header  -->
+        <a class="navbar-brand brand-logo mr-5" href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"]?>>ECO Recycling</a>
+        <a class="navbar-brand brand-logo-mini" href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"]?>><img src="images/eco-icon.png" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -60,16 +61,51 @@ if(!isset($_SESSION["Admin"])){
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-        <li class="nav-item">
+          <li class="nav-item">
             <div class="mx-0" style="margin-right: 5px;"><?php echo $_SESSION['Admin_name'] ?></div>
           </li>
-          <li class="nav-item dropdown">
+          <!-- <li class="nav-item">
+            <div class="mx-0" style="margin-right: 5px;">
+            Points : 
+          php 
+          $fetch_points = $connect->prepare("SELECT Points FROM `users` WHERE UserID=?");
+          $fetch_points->execute(array($_SESSION['Admin_id']));
+          $row_points = $fetch_points->fetch();
+          $count_points = $fetch_points->rowCount();
+          if($count_points > 0){
+            echo $row_points['Points'];
+          }else{
+            echo "0";
+          }
+          ?>
+          </div>
+          </li> -->
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
               <span class="count"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+              
+              <a class="dropdown-item preview-item">
+                
+                <div class="preview-item-content">
+                  
+                  php 
+                  $fetch_notfication = $connect->prepare("SELECT * FROM notifcations WHERE User_id=?");
+                  $fetch_notfication->execute(array($_SESSION["Admin_id"]));
+                  $row_notfi = $fetch_notfication->fetchAll();
+                  $count_notfi = $fetch_notfication->rowCount();
+                  if($count_notfi > 0){
+                    foreach($row_notfi as $notfi){?>
+                     <h6 class="preview-subject font-weight-normal"> php echo $notfi['textnotfication']?> </h6>
+                  php }
+                  }
+                  ?>
+                  
+                </div>
+              </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-success">
@@ -110,22 +146,23 @@ if(!isset($_SESSION["Admin"])){
                 </div>
               </a>
             </div>
-          </li>
+          </li> -->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
               <img src="images/eco-icon.png" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
+              <!-- <a class="dropdown-item">
                 <i class="ti-settings text-primary"></i>
                 Settings
-              </a>
+              </a> -->
               <a href="logout.php" class="dropdown-item">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
             </div>
           </li>
+          
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>

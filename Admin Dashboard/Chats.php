@@ -110,7 +110,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <style>
         /* Customize chat box styles here */
         .chat-container {
-          height: 300px; /* Adjust height as needed */
+          height: 400px; /* Adjust height as needed */
           overflow-y: auto;
         }
         .message {
@@ -145,12 +145,80 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         html {
           scroll-behavior: auto; /* Or scroll-behavior: smooth for smooth scrolling */
         }
+        .sidebar-right {
+    background-color: #f8f9fa;
+    /* width: 300px; */
+    /* position: fixed; */
+    /* right: 0; */
+    /* top: 0; */
+    /* bottom: 0; */
+    overflow-y: auto;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.chat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lists {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+.profile:hover {
+    background-color: #e2e6ea;
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.online {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+    margin-left: -15px;
+    margin-top: 30px;
+    border: 2px solid #f8f9fa;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+.chat-status {
+    font-size: 0.9em;
+    color: #888;
+    margin: 0;
+}
+
       </style>
   
 </head>
 <body>
   <div class="container-scroller">
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+  <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <!-- this change header  -->
         <a class="navbar-brand brand-logo mr-5" href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"]?>>ECO Recycling</a>
@@ -176,7 +244,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <li class="nav-item">
             <div class="mx-0" style="margin-right: 5px;"><?php echo $_SESSION['Admin_name'] ?></div>
           </li>
-          <li class="nav-item dropdown">
+          <!-- <li class="nav-item">
+            <div class="mx-0" style="margin-right: 5px;">
+            Points : 
+          php 
+          $fetch_points = $connect->prepare("SELECT Points FROM `users` WHERE UserID=?");
+          $fetch_points->execute(array($_SESSION['Admin_id']));
+          $row_points = $fetch_points->fetch();
+          $count_points = $fetch_points->rowCount();
+          if($count_points > 0){
+            echo $row_points['Points'];
+          }else{
+            echo "0";
+          }
+          ?>
+          </div>
+          </li> -->
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
               <span class="count"></span>
@@ -188,15 +272,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 <div class="preview-item-content">
                   
-                  <?php 
+                  php 
                   $fetch_notfication = $connect->prepare("SELECT * FROM notifcations WHERE User_id=?");
                   $fetch_notfication->execute(array($_SESSION["Admin_id"]));
                   $row_notfi = $fetch_notfication->fetchAll();
                   $count_notfi = $fetch_notfication->rowCount();
                   if($count_notfi > 0){
                     foreach($row_notfi as $notfi){?>
-                     <h6 class="preview-subject font-weight-normal"> <?php echo $notfi['text']?> </h6>
-                  <?php }
+                     <h6 class="preview-subject font-weight-normal"> php echo $notfi['textnotfication']?> </h6>
+                  php }
                   }
                   ?>
                   
@@ -242,16 +326,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
               </a>
             </div>
-          </li>
+          </li> -->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
               <img src="images/eco-icon.png" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
+              <!-- <a class="dropdown-item">
                 <i class="ti-settings text-primary"></i>
                 Settings
-              </a>
+              </a> -->
               <a href="logout.php" class="dropdown-item">
                 <i class="ti-power-off text-primary"></i>
                 Logout
@@ -412,39 +496,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <!-- main-panel ends -->
       
       <nav class="sidebar-right sidebar-offcanvas" id="sidebar">
-      <ul class="chat-list">
+    <ul class="chat-list">
         <?php  
-        // fetch user form table users
-        $fetch_user = $connect->prepare("SELECT * FROM users WHERE `UserID` !=? AND  `Type` !=?");
-        $fetch_user->execute(array($_SESSION['Admin_id'] , 'Admin'));
+        // Fetch users from the table 'users'
+        $fetch_user = $connect->prepare("SELECT * FROM users WHERE `UserID` != ? AND `Type` != ?");
+        $fetch_user->execute(array($_SESSION['Admin_id'], 'Admin'));
         $row_user = $fetch_user->fetchAll();
         $count_user = $fetch_user->rowCount();
-        // start if condition is users > 0
-        if($count_user > 0){ 
-          // start for loop of users
-          foreach($row_user as $user){
+        
+        // Check if there are users to display
+        if ($count_user > 0) { 
+            // Loop through each user
+            foreach ($row_user as $user) {
         ?>
-
-              <li class="lists">
-                <a class="profile" href=<?php echo  "Chats.php?chat=" . $user['UserID'] ?>><img src="images/faces/face1.jpg" alt="image" class="profile-image"><span class="online"></span>
-                <div class="info">
-                  <p><?php echo $user['FirstName'] . " " . $user['LastName'] ?></p>
-                  <?php if($user['UserID'] == $_GET['chat']) {?>
-                    <p>chating now</p>
-                  <?php }  ?>
-                  
-                </div>
-                </a>
-                <!-- <small class="text-muted my-auto">19 min</small> -->
-              </li>
-        <?php } // end loop
-        }//end if condition
+                <li class="lists">
+                    <a class="profile" href="Chats.php?chat=<?php echo $user['UserID']; ?>">
+                        <img src="images/faces/face1.jpg" alt="image" class="profile-image">
+                        <span class="online"></span>
+                        <div class="info">
+                            <p class="user-name"><?php echo $user['FirstName'] . " " . $user['LastName']; ?></p>
+                            <?php if ($user['UserID'] == $_GET['chat']) { ?>
+                                <p class="chat-status">Chating now</p>
+                            <?php } ?>
+                        </div>
+                    </a>
+                </li>
+        <?php 
+            } // End loop
+        } // End if condition
         ?>        
-              
-              
-              
-      </ul>
-      </nav>
+    </ul>
+</nav>
+
+
       
       
     </div>   
@@ -476,9 +560,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   
   <!-- fresh chat every 5 second -->
   <script>
-    setInterval(function () {
-      location.reload(true)
-    }, 12000);
+    // setInterval(function () {
+    //   location.reload(true)
+    // }, 12000);
     
     window.onload = function() {
       const targetElement = document.getElementById('target-message'); // Replace with your element ID

@@ -557,9 +557,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   
   <!-- fresh chat every 5 second -->
   <script>
-    // setInterval(function () {
-    //   location.reload(true)
-    // }, 12000);
+    setInterval(function () {
+      location.reload(true)
+    }, 12000);
     
     window.onload = function() {
       const targetElement = document.getElementById('target-message'); // Replace with your element ID

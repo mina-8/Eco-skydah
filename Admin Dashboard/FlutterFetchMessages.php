@@ -5,8 +5,9 @@ session_start();
 
 $chatId = $_GET['chat'];
 
-$fetch_message = $connect->prepare("SELECT * FROM messages WHERE SenderID=? AND ReceiverID=1 AND `Timestamp` IS NOT NULL");
-$fetch_message->execute(array($chatId));
+$fetch_message = $connect->prepare("SELECT * FROM messages WHERE (SenderID = ? OR ReceiverID = ?) AND `Timestamp` IS NOT NULL");
+$fetch_message->execute(array($chatId,$chatId));
+
 // $messages = $fetch_message->fetchAll(PDO::FETCH_ASSOC);
 $messages = $fetch_message->fetchAll(); // this should return array
 

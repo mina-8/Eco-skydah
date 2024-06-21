@@ -21,8 +21,8 @@ $timestamp = date("Y-m-d H:i:s");
 // ));
 
     // check first if exist chats betwen sender and reciver or not
-  $fetch_chat = $connect->prepare("SELECT * FROM chats Where SenderID=? AND ReceiverID=? OR SenderID=? AND ReceiverID=?  AND `Timestamp` IS NOT NULL");
-  $fetch_chat->execute(array($_SESSION['Admin_id'] , $row_user['UserID'] , $row_user['UserID'] , $_SESSION['Admin_id']  ));
+  $fetch_chat = $connect->prepare("SELECT * FROM chats Where (SenderID=? AND ReceiverID=?) OR (SenderID=? AND ReceiverID=?)  AND `Timestamp` IS NOT NULL");
+  $fetch_chat->execute(array($receiverId , $senderId , $senderId , $receiverId  ));
   $row_chat = $fetch_chat->fetch();
   $count_chat = $fetch_chat->rowCount();
   if($count_chat > 0){

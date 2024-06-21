@@ -370,7 +370,7 @@ if(!isset($_SESSION["Admin"])){
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"></label>
                                 <div class="col-sm-9">
-                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="create" />
+                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="Edit" />
                                 </div>
                               </div>
                             </div>

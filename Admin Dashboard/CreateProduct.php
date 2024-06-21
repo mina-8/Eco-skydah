@@ -32,7 +32,7 @@ if(!isset($_SESSION["Admin"])){
     $waste_type = $_POST["waste_type"];
     $quantity = $_POST["quantity"];
     $registerdate = date("Y-m-d H:i:s");
-    $status = $_POST["status"];
+    
     
 
     // create product 
@@ -64,7 +64,7 @@ if(!isset($_SESSION["Admin"])){
       "WasteType" => $waste_type ,
       "Quantity" => $quantity ,
       "CollectionTime" => $registerdate ,
-      "Stat" => $status ,
+      "Stat" => 'Pending' ,
     ));
 
     header("location: indexProduct.php");
@@ -339,14 +339,7 @@ if(!isset($_SESSION["Admin"])){
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">status</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="status" />
-                          </div>
-                        </div>
-                      </div>
+                       
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label"></label>

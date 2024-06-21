@@ -141,7 +141,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         p,h2,h3,span,h1,h4,h6,h5,button,a,div{
         font-family: 'Cairo', sans-serif!important;
-    }
+        }
+        html {
+          scroll-behavior: auto; /* Or scroll-behavior: smooth for smooth scrolling */
+        }
       </style>
   
 </head>
@@ -327,17 +330,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
       
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="row">
-                <!-- start chat -->
-
-                
-        <div class="container-fluid overflow-hidden py-5 px-lg-0">
-            <div class="container feature px-lg-0 py-5">
-                <div class=" col-8 mx-auto border p-3 bg-white"><h6 class="mb-0"><?php echo $row_user['FirstName'].' '.$row_user['LastName'] ?></h6></div>
+      <div class="main-panel main-panel-chats">
+        <div class="content-wrappers">
+        <div class="container-fluid overflow-hidden ">
+            <div class="">
+                <div class=" col-12 mx-auto border p-3 bg-white"><h6 class="mb-0"><?php echo $row_user['FirstName'].' '.$row_user['LastName'] ?></h6></div>
                 
                 <?php
                   // check if chats table has exist chat or not
@@ -348,7 +345,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                   $count_chat = $fetch_chat->rowCount();
                   // start if condition is users > 0
                 ?>
-                <div class="chat-container col-8 mx-auto border p-3 bg-white" id="chatload">
+                <div class="chat-container col-12 mx-auto border p-3 bg-white" id="chatload">
                     <?php 
                       if($count_chat > 0){
                         // fetch message form table messages
@@ -372,18 +369,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 // check sender
                                 if($messages['ReceiverID'] == $row_user['UserID']){?>
                                     <div class="mssOut me">
-                                      <div class="message col-10 me"><?php echo $messages['Message'] ?></div>
+                                      <div class="message col-10 me" ><?php echo $messages['Message'] ?></div>
                                     </div>
                                     <?php }?>
 
                           <?php } // end loop message
+                            ?>
+                            <div id="target-message"></div>
+                            <?php
                         } // end if condtion check message
                       } // end if conition check chat
                     ?>
                     
                 </div>
                 
-                <div class=" col-8 mx-auto border p-3 bg-white">
+                <div class=" col-12 mx-auto border p-3 bg-white">
                   <form class="" action="<?php echo $_SERVER["PHP_SELF"] . "?chat=" . $_GET['chat'] ?>" method="POST" enctype="application/x-www-form-urlencoded">
                     <div class="input-group">
                       <textarea type="text" name="message" class="form-control me-2 rounded" placeholder="Write Here ..."></textarea>
@@ -396,11 +396,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             </div>
         </div>
-
-                <!-- end chat -->
-              </div>
-            </div>
-          </div>
           
           
         </div>
@@ -434,7 +429,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <a class="profile" href=<?php echo  "Chats.php?chat=" . $user['UserID'] ?>><img src="images/faces/face1.jpg" alt="image" class="profile-image"><span class="online"></span>
                 <div class="info">
                   <p><?php echo $user['FirstName'] . " " . $user['LastName'] ?></p>
-                  <!-- <p>Available</p> -->
+                  <?php if($user['UserID'] == $_GET['chat']) {?>
+                    <p>chating now</p>
+                  <?php }  ?>
+                  
                 </div>
                 </a>
                 <!-- <small class="text-muted my-auto">19 min</small> -->
@@ -482,7 +480,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       location.reload(true)
     }, 12000);
     
-
+    window.onload = function() {
+      const targetElement = document.getElementById('target-message'); // Replace with your element ID
+      if (targetElement) {
+        document.getElementById('target-message').scrollIntoView()
+      }
+    };
   </script>
 </body>
 

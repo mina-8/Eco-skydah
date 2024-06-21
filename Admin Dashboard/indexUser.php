@@ -265,7 +265,12 @@ if(!isset($_SESSION["Admin"])){
                                   </td>
                                   <td>
                               <button type="button" class="btn btn-danger btn-sm" onclick="MyAlert(<?php echo htmlspecialchars($user['UserID']); ?>)">Delete</button>
-                              <a class="btn btn-info btn-sm" href="EditProduct.php?productid=<?php echo urlencode($user['UserID']); ?>">Edit</a>
+                              <a class="btn btn-info btn-sm" href="EditUser.php?userid=<?php echo urlencode($user['UserID']); ?>">Edit</a>
+                              <?php
+                              if($user['UserID'] !== $_SESSION['Admin_id']){?>
+                                  <a class="btn btn-info btn-sm" href="Chats.php?chat=<?php echo urlencode($user['UserID']); ?>">Msg</a>
+                              <?php }
+                              ?>
                             </td>
                                 </tr> 
 

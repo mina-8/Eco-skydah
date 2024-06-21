@@ -258,14 +258,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
       
-      <div class="main-panel">
-        <div class="content-wrapper">
-            
-        <div class="container-fluid overflow-hidden py-5 px-lg-0">
-            <div class="container feature px-lg-0 py-5">
-                <div class=" col-8 mx-auto border p-3 bg-white"><h6 class="mb-0"><?php echo $_SESSION['Admin_name'] ?></h6></div>
+      <div class="main-panel main-panel-chats">
+        <div class="content-wrappers">   
+        <div class="container-fluid overflow-hidden py-5 px-lg-0 main-fluid">
+            <div class="">
+                <div class=" col-12 mx-auto border p-3 bg-white"><h6 class="mb-0"><?php echo $_SESSION['Admin_name'] ?></h6></div>
                 
-                <div class="chat-container col-8 mx-auto border p-3 bg-white" id="chatload">
+                <div class="chat-container col-12 mx-auto border p-3 bg-white main-chat" id="chatload">
                     
                                   <div class="mssOut">
                                       <div class="message col-10">
@@ -289,7 +288,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     
                 </div>
                 
-                <div class=" col-8 mx-auto border p-3 bg-white">
+                <div class=" col-12 mx-auto border p-3 bg-white">
                   <form class="" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST" enctype="application/x-www-form-urlencoded">
                     <div class="input-group">
                       <textarea type="text" name="message" class="form-control me-2 rounded" placeholder="Write Here ..."></textarea>
@@ -300,18 +299,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     </div>
                 </form>
             </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+              <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024.  Premium <a href="https://www.bootstrapdash.com/" target="_blank"></a>. All rights reserved.</span>
+              </div>
+            </footer> 
             </div>
         </div>
           
           
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024.  Premium <a href="https://www.bootstrapdash.com/" target="_blank"></a>. All rights reserved.</span>
-          </div>
-        </footer> 
         <!-- partial -->
       </div>
       <!-- main-panel ends -->

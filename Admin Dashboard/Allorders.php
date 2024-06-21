@@ -208,8 +208,8 @@ if(!isset($_SESSION["Admin"])){
                       <tbody>
                         <?php 
                           // fetch product form wasteentries table 
-                          $fetch_products = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID");
-                          $fetch_products->execute();
+                          $fetch_products = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID WHERE wasteentries.Status =?");
+                          $fetch_products->execute(array('Pending'));
                           $row_product = $fetch_products->fetchAll();
                           $count_product = $fetch_products->rowCount();
                           // start if condition to check if product is exist 

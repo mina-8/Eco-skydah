@@ -18,6 +18,7 @@ if(!isset($_SESSION["Admin"])){
     
 
     $RewardType = $_POST['wastetype'];
+    $product_id = $_POST['productid'];
     $user_id = $_POST['userid'];
     $PointsRedeemed = $_POST['quantity'] * $_POST['price'];
     $RedemptionDate = date("Y-m-d H:i:s");
@@ -29,7 +30,27 @@ if(!isset($_SESSION["Admin"])){
     $count_product = $fetch_product->rowCount();
     if($count_product > 0){
 
-    
+    // update users points
+    $fetch_user_points = $connect->prepare("SELECT Points FROM users WHERE UserID=?");
+    $fetch_user_points->execute(array($user_id));
+    $user_points = $fetch_user_points->fetch();
+    $user_points = (int)$user_points['Points'] + $PointsRedeemed;
+    $update_user_points = $connect->prepare("UPDATE 
+                                                users
+                                              SET
+                                              Points=?
+                                              WHERE
+                                              UserID=?");
+    $update_user_points->execute(array($user_points , $user_id));
+    // update wasteentries
+    $update_wasteentr = $connect->prepare("UPDATE 
+                                            wasteentries
+                                            SET
+                                            `Status`=?
+                                            WHERE
+                                            ProductID=?");
+    $update_wasteentr->execute(array('Done' ,$product_id));
+
     // create rewards 
     $create_rewards = $connect->prepare("INSERT INTO
                                               rewards
@@ -59,7 +80,27 @@ if(!isset($_SESSION["Admin"])){
     header("location: Allorders.php");
     exit(); 
     }else{
+    // update users points
+    $fetch_user_points = $connect->prepare("SELECT Points FROM users WHERE UserID=?");
+    $fetch_user_points->execute(array($user_id));
+    $user_points = $fetch_user_points->fetch();
+    $user_points = (int)$user_points['Points'] + $PointsRedeemed;
+    $update_user_points = $connect->prepare("UPDATE 
+                                                users
+                                              SET
+                                              Points=?
+                                              WHERE
+                                              UserID=?");
+    $update_user_points->execute(array($user_points , $user_id));
     
+    // update wasteentries
+    $update_wasteentr = $connect->prepare("UPDATE 
+                                            wasteentries
+                                            SET
+                                            `Status`=?
+                                            WHERE
+                                            ProductID=?");
+    $update_wasteentr->execute(array('Done' ,$product_id));
     
     // create rewards 
     $create_rewards = $connect->prepare("INSERT INTO
@@ -308,7 +349,7 @@ if(!isset($_SESSION["Admin"])){
                     $fetch_product = $connect->prepare("SELECT * , products.* , users.* FROM `wasteentries` 
                     INNER JOIN products ON wasteentries.ProductID = products.ProductID 
                     INNER JOIN users ON wasteentries.UserID = users.UserID
-                    WHERE wasteentries.ProductID=?");
+                    WHERE wasteentries.ProductID=? ");
                     $fetch_product->execute(array($_GET['orderid']));
                     $row_procudt = $fetch_product->fetchAll();
                     $count_product = $fetch_product->rowCount();
@@ -321,7 +362,8 @@ if(!isset($_SESSION["Admin"])){
                           <p class="card-description">
                             Product info
                           </p>
-                          <input type="hidden" name="wastetype" value=<?php echo $product['WasteType']?> />
+                          <input type="hidden" name="wastetype" value=<?php echo $product['WasteType']?> /> 
+                          <input type="hidden" name="productid" value=<?php echo $product['ProductID']?> /> 
                           <input type="hidden" name="price" value=<?php echo $product['Price']?> />
                           <input type="hidden" name="quantity" value=<?php echo $product['Quantity']?> />
                           <input type="hidden" name="userid" value=<?php echo $product['UserID']?> />

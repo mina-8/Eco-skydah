@@ -167,6 +167,31 @@ if(!isset($_SESSION["Admin"])){
               </ul>
             </div>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Orders</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-order">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="Allorders.php">All Orders</a></li>
+                
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-chat" aria-expanded="false" aria-controls="ui-product">
+              <i class="mdi mdi-wechat icon-layout menu-icon"></i>
+              <span class="menu-title">Chats</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-chat">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="MainChat.php">All Chats</a></li>
+              </ul>
+            </div>
+          </li>
         </ul>
       </nav>
       <div class="main-panel">
@@ -203,6 +228,10 @@ if(!isset($_SESSION["Admin"])){
                                 <!-- <td>php echo $product['CollectionTime'] ?></td> -->
                                 <!-- <td class="font-weight-medium"><div class="badge badge-success">php echo $product['Status'] ?></div></td> -->
                                 <td><img src=<?php echo $product['Product_image'] ?>> </td>
+                                <td>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="MyAlert(<?php echo htmlspecialchars($product['ProductID']); ?>)">Delete</button>
+                                <a class="btn btn-info btn-sm" href="EditProduct.php?productid=<?php echo urlencode($product['ProductID']); ?>">Edit</a>
+                                </td>
                               </tr>
                             
                             
@@ -278,6 +307,27 @@ if(!isset($_SESSION["Admin"])){
   <script src="js/dashboard.js"></script>
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
+  <script>
+
+  function MyAlert(product_id){
+    if(confirm("Are you sure to delete") == true){
+      let data_form = new FormData();
+      data_form.append("deleteproduct" , "deleteproduct");
+      data_form.append("productid" , product_id);
+      $.ajax({
+        url : 'Fetchdata.php',
+        method : "POST",
+        data :data_form,
+        dataType : false,
+        contentType : false,
+        processData : false,
+        success :function(data){
+          location.reload()
+        }
+      })
+    }
+  }
+  </script>
 </body>
 
 </html>

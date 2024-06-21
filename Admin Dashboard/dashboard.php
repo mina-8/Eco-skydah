@@ -67,12 +67,12 @@ if(!isset($_SESSION["Admin"])){
             <div class="mx-0" style="margin-right: 5px;">
             points : 
           <?php 
-          $fetch_points = $connect->prepare("SELECT SUM(PointsRedeemed) AS pointssum FROM `rewards` WHERE UserID=?");
+          $fetch_points = $connect->prepare("SELECT Points FROM `users` WHERE UserID=?");
           $fetch_points->execute(array($_SESSION['Admin_id']));
           $row_points = $fetch_points->fetch();
           $count_points = $fetch_points->rowCount();
           if($count_points > 0){
-            echo $row_points['pointssum'];
+            echo $row_points['Points'];
           }else{
             echo "0";
           }
@@ -284,9 +284,20 @@ if(!isset($_SESSION["Admin"])){
                 <div class="col-md-6 mb-4 stretch-card transparent">
                   <div class="card card-tale">
                     <div class="card-body">
-                      <p class="mb-4">Today’s Recycling</p>
-                      <p class="fs-30 mb-2">250</p>
-                      <p>10.00% (30 days)</p>
+                      <p class="mb-4">Total qunatity Recycling</p>
+                      <?php 
+                        $fetch_quantity = $connect->prepare("SELECT SUM(Quantity) AS Allquantity FROM wasteentries");
+                        $fetch_quantity->execute();
+                        $row_quantity = $fetch_quantity->fetch();
+                        $coun_quantity = $fetch_quantity->rowCount();
+                        if($coun_quantity > 0){?>
+                          <p class="fs-30 mb-2"><?php echo $row_quantity['Allquantity']?></p>
+                          <p><?php echo  number_format((float)($row_quantity['Allquantity'] / 30)/10, 2, '.', '')?>% (30 days)</p>
+                        <?php }else{?>
+                          <p class="fs-30 mb-2">0</p>
+                          <p>0% (30 days)</p>
+                        <?php }
+                      ?>
                     </div>
                   </div>
                 </div>
@@ -294,8 +305,20 @@ if(!isset($_SESSION["Admin"])){
                   <div class="card card-dark-blue">
                     <div class="card-body">
                       <p class="mb-4">Total Recycling</p>
-                      <p class="fs-30 mb-2">61344</p>
-                      <p>22.00% (30 days)</p>
+                      <?php
+                        $fetch_recycle = $connect->prepare("SELECT COUNT(ProductID) AS Allrecycle FROM products");
+                        $fetch_recycle->execute();
+                        $row_recycle = $fetch_recycle->fetch();
+                        $count_recycle = $fetch_recycle->rowCount();
+                        if($count_recycle > 0){?>
+                          <p class="fs-30 mb-2"><?php echo $row_recycle['Allrecycle']?></p>
+                          <p><?php echo  number_format((float)($row_recycle['Allrecycle'] / 30)/10, 2, '.', '')?>% (30 days)</p>
+                        <?php }else{?>
+                          <p class="fs-30 mb-2">0</p>
+                          <p>0% (30 days)</p>
+                        <?php }
+                      ?>
+                      
                     </div>
                   </div>
                 </div>
@@ -304,9 +327,20 @@ if(!isset($_SESSION["Admin"])){
                 <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                   <div class="card card-light-blue">
                     <div class="card-body">
-                      <p class="mb-4">Number of Orders</p>
-                      <p class="fs-30 mb-2">34040</p>
-                      <p>2.00% (30 days)</p>
+                      <p class="mb-4">Total of Points</p>
+                        <?php 
+                        $fetch_points = $connect->prepare("SELECT SUM(Points) AS Allpoints FROM users");
+                        $fetch_points->execute();
+                        $row_points = $fetch_points->fetch();
+                        $count_points = $fetch_points->rowCount();
+                        if($count_points > 0){?>
+                          <p class="fs-30 mb-2"><?php echo $row_points['Allpoints']?></p>
+                          <p><?php echo  number_format((float)($row_points['Allpoints'] / 30)/10, 2, '.', '')?>% (30 days)</p>
+                        <?php }else{?>
+                          <p class="fs-30 mb-2">0</p>
+                          <p>0% (30 days)</p>
+                        <?php }
+                        ?>
                     </div>
                   </div>
                 </div>
@@ -314,8 +348,20 @@ if(!isset($_SESSION["Admin"])){
                   <div class="card card-light-danger">
                     <div class="card-body">
                       <p class="mb-4">Number of Clients</p>
-                      <p class="fs-30 mb-2">47033</p>
-                      <p>0.22% (30 days)</p>
+                      <?php
+                        $fetch_users = $connect->prepare("SELECT COUNT(UserID) AS Allusers FROM users");
+                        $fetch_users->execute();
+                        $row_users = $fetch_users->fetch();
+                        $count_users = $fetch_users->rowCount();
+                        if($count_users > 0){?>
+                          <p class="fs-30 mb-2"><?php echo $row_users['Allusers']?></p>
+                          <p><?php echo  number_format((float)($row_users['Allusers'] / 30)/10, 2, '.', '')?>% (30 days)</p>
+                        <?php }else{?>
+                          <p class="fs-30 mb-2">0</p>
+                          <p>0% (30 days)</p>
+                        <?php }
+                      ?>
+                      
                     </div>
                   </div>
                 </div>
@@ -860,7 +906,7 @@ if(!isset($_SESSION["Admin"])){
 
 </html>
 
-i
+
 <!-- this line to end session -->
 <?php
 ob_end_flush();

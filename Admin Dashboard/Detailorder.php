@@ -71,12 +71,9 @@ if(!isset($_SESSION["Admin"])){
     ));
 
     // update wasteentries
-    $delete_wasteentr = $connect->prepare("DELETE FROM 
-                                            wasteentries
-                                            WHERE
-                                            ProductID=:productid");
-    $delete_wasteentr->bindParam('productid' ,$product_id);
-    $delete_wasteentr->execute();
+    $delete_wasteentr = $connect->prepare("UPDATE `wasteentries` SET `Status` = 'Done' WHERE `wasteentries`.`EntryID` = ?");
+
+    $delete_wasteentr->execute(array($_POST['orderid']));
 
     header("location: Allorders.php");
     exit(); 
@@ -335,6 +332,8 @@ if(!isset($_SESSION["Admin"])){
                           <input type="hidden" name="price" value=<?php echo $product['Price']?> />
                           <input type="hidden" name="quantity" value=<?php echo $product['Quantity']?> />
                           <input type="hidden" name="userid" value=<?php echo $product['UserID']?> />
+                          <input type="hidden" name="orderid" value=<?php echo $product['EntryID']?> />
+
                           <div class="row">
                             <div class="col-md-6">
                               <div class="form-group row">

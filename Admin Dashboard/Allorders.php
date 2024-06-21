@@ -256,8 +256,8 @@ if(!isset($_SESSION["Admin"])){
                       <tbody>
                         <?php 
                           // fetch product form wasteentries table 
-                          $fetch_products = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID WHERE wasteentries.Status =?");
-                          $fetch_products->execute(array('Pending'));
+                          $fetch_products = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID ");
+                          $fetch_products->execute();
                           $row_product = $fetch_products->fetchAll();
                           $count_product = $fetch_products->rowCount();
                           // start if condition to check if product is exist 
@@ -272,8 +272,10 @@ if(!isset($_SESSION["Admin"])){
                                 <td><img src=<?php echo $product['Product_image'] ?>> </td>
                                 <td>
                                   
-                                  <!-- <button type="button" class="btn btn-danger" onclick="MyAlert(<?php echo $product['ProductID'] ?>)">Danger</button> -->
+                                  <!-- <button type="button" class="btn btn-danger" onclick="MyAlert(php echo $product['ProductID'] ?>)">Danger</button> -->
+                                  <?php if($product['Status'] === 'Pending') {?>
                                   <a class="btn btn-info" href=<?php echo "Detailorder.php?orderid=" . $product['ProductID']?>>details</a>
+                                  <?php }?>
                                 </td>
                                 
                               </tr>

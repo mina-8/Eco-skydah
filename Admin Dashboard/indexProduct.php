@@ -244,7 +244,7 @@ if(!isset($_SESSION["Admin"])){
                       <thead>
                         <tr>
                           <th>Product</th>
-                          <th>Price</th>
+                          <th>Value</th>
                           <!-- <th>Date</th> -->
                           <!-- <th>Status</th> -->
                           <th>Image</th>
@@ -262,7 +262,7 @@ if(!isset($_SESSION["Admin"])){
                             foreach($row_product as $product){?>
                               <tr>
                                 <td><?php echo $product['ProductName'] ?></td>
-                                <td class="font-weight-bold"><?php echo "$". $product['Price']?></td>
+                                <td class="font-weight-bold"><?php echo $product['Price'] . " Point"?></td>
                                 <!-- <td>php echo $product['CollectionTime'] ?></td> -->
                                 <!-- <td class="font-weight-medium"><div class="badge badge-success">php echo $product['Status'] ?></div></td> -->
                                 <td><img src=<?php echo $product['Product_image'] ?>> </td>

@@ -15,7 +15,12 @@ if(!isset($_SESSION["Admin"])){
 
   // get request from form php self
   if($_SERVER["REQUEST_METHOD"] == "POST"){
-    
+    /**<input type="hidden" name="wastetype" value=<?php echo $product['WasteType']?> /> 
+                          <input type="hidden" name="productid" value=<?php echo $product['ProductID']?> /> 
+                          <input type="hidden" name="price" value=<?php echo $product['Price']?> />
+                          <input type="hidden" name="quantity" value=<?php echo $product['Quantity']?> />
+                          <input type="hidden" name="userid" value=<?php echo $product['UserID']?> />
+                          <input type="hidden" name="orderid" value=<?php echo $product['EntryID']?> /> */
 
     $RewardType = $_POST['wastetype'];
     $product_id = $_POST['productid'];
@@ -28,7 +33,6 @@ if(!isset($_SESSION["Admin"])){
     $fetch_product->execute(array($user_id));
     $row_product = $fetch_product->fetch();
     $count_product = $fetch_product->rowCount();
-    if($count_product > 0){
 
     // update users points
     $fetch_user_points = $connect->prepare("SELECT Points FROM users WHERE UserID=?");
@@ -77,7 +81,7 @@ if(!isset($_SESSION["Admin"])){
 
     header("location: Allorders.php");
     exit(); 
-    }
+  
     
   }
 
@@ -314,7 +318,7 @@ if(!isset($_SESSION["Admin"])){
                     $fetch_product = $connect->prepare("SELECT * , products.* , users.* FROM `wasteentries` 
                     INNER JOIN products ON wasteentries.ProductID = products.ProductID 
                     INNER JOIN users ON wasteentries.UserID = users.UserID
-                    WHERE wasteentries.ProductID=? ");
+                    WHERE wasteentries.EntryID=? ");
                     $fetch_product->execute(array($_GET['orderid']));
                     $row_procudt = $fetch_product->fetchAll();
                     $count_product = $fetch_product->rowCount();
@@ -335,68 +339,68 @@ if(!isset($_SESSION["Admin"])){
                           <input type="hidden" name="orderid" value=<?php echo $product['EntryID']?> />
 
                           <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Product Name</label>
-                                <div class="col-sm-9">
-                                  <div class="col-sm-3 col-form-label"><?php echo $product['ProductName'] ?></div>
+                                <div class="col-9">
+                                  <div class="col-form-label"><?php echo $product['ProductName'] ?></div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Description</label>
-                                <div class="col-sm-9">
-                                  <div class="col-sm-3 col-form-label"><?php echo $product['Description'] ?></div>
+                                <div class="col-9">
+                                  <div class="col-form-label"><?php echo $product['Description'] ?></div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-6">
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">price</label>
-                                <div class="col-sm-9">
-                                  <div class="col-sm-3 col-form-label"><?php echo $product['Price'] . " pound" ?></div>
+                                <label class="col-sm-3 col-form-label">Value</label>
+                                <div class="col-9">
+                                  <div class="col-form-label"><?php echo $product['Price'] . " Points" ?></div>
                                 </div>
                               </div>
                             </div>
                             
-                            <div class="col-md-6">
+                            <div class="col-6">
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">waste type</label>
-                                <div class="col-sm-9">
-                                  <div class="col-sm-3 col-form-label"><?php echo $product['WasteType'] ?></div>
+                                <label class="col-sm-3 col-form-label">Waste Type</label>
+                                <div class="col-9">
+                                  <div class="col-form-label"><?php echo $product['WasteType'] ?></div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">quantity</label>
-                                <div class="col-sm-9">
-                                  <div class="col-sm-3 col-form-label"><?php echo $product['Quantity'] ?></div>
+                                <div class="col-9">
+                                  <div class="col-form-label"><?php echo $product['Quantity'] ?></div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">status</label>
-                                <div class="col-sm-9">
-                                  <div class="col-sm-3 col-form-label"><?php echo $product['Status'] ?></div>
+                                <div class="col-9">
+                                  <div class="col-form-label"><?php echo $product['Status'] ?></div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">user name</label>
-                                <div class="col-sm-9">
-                                  <div class="col-sm-3 col-form-label"><?php echo $product['FirstName'] ?></div>
+                                <div class="col-9">
+                                  <div class="col-form-label"><?php echo $product['FirstName'] ?></div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"></label>
-                                <div class="col-sm-9">
-                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="add rewards" />
+                                <div class="col-9">
+                                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" value="Add Rewards" />
                                 </div>
                               </div>
                             </div>

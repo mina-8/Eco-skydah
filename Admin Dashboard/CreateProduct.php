@@ -304,7 +304,7 @@ if(!isset($_SESSION["Admin"])){
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">price</label>
+                          <label class="col-sm-3 col-form-label">Value</label>
                           <div class="col-sm-9">
                             <input type="number" class="form-control" name="price" />
                           </div>

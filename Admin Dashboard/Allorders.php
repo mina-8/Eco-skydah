@@ -245,7 +245,7 @@ if(!isset($_SESSION["Admin"])){
                       <thead>
                         <tr>
                           <th>Product</th>
-                          <th>Price</th>
+                          <th>Value</th>
                           <th>Date</th>
                           <th>Quantity</th>
                           <th>Status</th>
@@ -265,7 +265,7 @@ if(!isset($_SESSION["Admin"])){
                             foreach($row_product as $product){?>
                               <tr>
                                 <td><?php echo $product['ProductName'] ?></td>
-                                <td class="font-weight-bold"><?php echo "$". $product['Price']?></td>
+                                <td class="font-weight-bold"><?php echo $product['Price']. ' Points'?></td>
                                 <td><?php echo $product['CollectionTime'] ?></td>
                                 <td class="font-weight-medium"><div class="badge badge-success"><?php echo $product['Quantity'] ?></div></td>
                                 <td class="font-weight-medium"><div class="badge badge-success"><?php echo $product['Status'] ?></div></td>
@@ -274,7 +274,7 @@ if(!isset($_SESSION["Admin"])){
                                   
                                   <!-- <button type="button" class="btn btn-danger" onclick="MyAlert(php echo $product['ProductID'] ?>)">Danger</button> -->
                                   <?php if($product['Status'] === 'Pending') {?>
-                                  <a class="btn btn-info" href=<?php echo "Detailorder.php?orderid=" . $product['ProductID']?>>details</a>
+                                  <a class="btn btn-info" href=<?php echo "Detailorder.php?orderid=" . $product['EntryID']?>>Details</a>
                                   <?php }?>
                                 </td>
                                 

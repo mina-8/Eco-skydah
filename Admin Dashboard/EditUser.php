@@ -209,7 +209,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-user" aria-expanded="false" aria-controls="ui-user">
-              <i class="icon-layout menu-icon"></i>
+            <i class="mdi mdi-account-multiple icon-layout menu-icon"></i>
               <span class="menu-title">Users</span>
               <i class="menu-arrow"></i>
             </a>
@@ -222,7 +222,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-book-open-variant"></i>
               <span class="menu-title">Products</span>
               <i class="menu-arrow"></i>
             </a>
@@ -235,7 +235,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-briefcase"></i>
               <span class="menu-title">Orders</span>
               <i class="menu-arrow"></i>
             </a>

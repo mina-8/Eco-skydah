@@ -21,13 +21,10 @@ if(!isset($_SESSION["Admin"])){
     $product_name = $_POST["product_name"];
     $description = $_POST["description"];
     $price = $_POST["price"];
-    $waste_type = $_POST["waste_type"];
-    $quantity = $_POST["quantity"];
-    $registerdate = date("Y-m-d H:i:s");
-    $status = $_POST["status"];
+    
     
     //get product
-    $fetch_product = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID WHERE wasteentries.ProductID=?");
+    $fetch_product = $connect->prepare("SELECT products.* FROM `products` WHERE products.ProductID=?");
     $fetch_product->execute(array($product_id));
     $row_product = $fetch_product->fetch();
     $count_product = $fetch_product->rowCount();
@@ -64,19 +61,10 @@ if(!isset($_SESSION["Admin"])){
 
     
 
-    // update wasteentries 
-    $update_wasteentr = $connect->prepare("UPDATE
-                                          wasteentries
-                                          SET
-                                          WasteType=? , Quantity=? , CollectionTime=? , `Status`=?
-                                          WHERE
-                                          EntryID=?");
-    // sql update wasteentries
-    $update_wasteentr->execute(array($waste_type , $quantity ,$registerdate ,$status ,$row_product['EntryID']));
-
+    
     header("location: indexProduct.php");
     exit(); 
-    }
+  }
   }
 
 ?>
@@ -251,7 +239,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-user" aria-expanded="false" aria-controls="ui-user">
-              <i class="icon-layout menu-icon"></i>
+              <i class="mdi mdi-account-multiple icon-layout menu-icon"></i>
               <span class="menu-title">Users</span>
               <i class="menu-arrow"></i>
             </a>
@@ -264,7 +252,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-book-open-variant"></i>
               <span class="menu-title">Products</span>
               <i class="menu-arrow"></i>
             </a>
@@ -277,7 +265,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-briefcase"></i>
               <span class="menu-title">Orders</span>
               <i class="menu-arrow"></i>
             </a>
@@ -310,7 +298,7 @@ if(!isset($_SESSION["Admin"])){
                 <div class="card-body">
                   <h4 class="card-title">Edit Product</h4>
                   <?php 
-                    $fetch_product = $connect->prepare("SELECT * , products.* FROM `wasteentries` INNER JOIN products ON wasteentries.ProductID = products.ProductID WHERE wasteentries.ProductID=?");
+                    $fetch_product = $connect->prepare("SELECT *  FROM `products`  WHERE ProductID=?");
                     $fetch_product->execute(array($_GET['productid']));
                     $row_procudt = $fetch_product->fetchAll();
                     $count_product = $fetch_product->rowCount();
@@ -360,30 +348,7 @@ if(!isset($_SESSION["Admin"])){
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">waste type</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="waste_type" value=<?php echo $product['WasteType'] ?> />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">quantity</label>
-                                <div class="col-sm-9">
-                                  <input type="number" class="form-control" name="quantity" value=<?php echo $product['Quantity'] ?> />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">status</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="status" value=<?php echo $product['Status'] ?> />
-                                </div>
-                              </div>
-                            </div>
+                            
                             <div class="col-md-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"></label>

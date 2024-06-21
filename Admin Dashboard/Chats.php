@@ -102,6 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="css/chats/chats.css">
   
   <link rel="shortcut icon" href="images/favicon.png" />
@@ -146,72 +147,68 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           scroll-behavior: auto; /* Or scroll-behavior: smooth for smooth scrolling */
         }
         .sidebar-right {
-    background-color: #f8f9fa;
-    /* width: 300px; */
-    /* position: fixed; */
-    /* right: 0; */
-    /* top: 0; */
-    /* bottom: 0; */
-    overflow-y: auto;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-}
+            background-color: #f8f9fa;
+            
+            overflow-y: auto;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        }
 
-.chat-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+      .chat-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+      }
 
-.lists {
-    padding: 10px;
-    border-bottom: 1px solid #e9ecef;
-}
+      .lists {
+          padding: 10px;
+          border-bottom: 1px solid #e9ecef;
+      }
 
-.profile {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #333;
-    transition: background-color 0.3s;
-}
+      .profile {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          color: #333;
+          transition: background-color 0.3s;
+      }
 
-.profile:hover {
-    background-color: #e2e6ea;
-}
+      .profile:hover {
+          background-color: #e2e6ea;
+      }
 
-.profile-image {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-    object-fit: cover;
-}
+      .profile-image {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 10px;
+          object-fit: cover;
+      }
 
-.online {
-    width: 10px;
-    height: 10px;
-    background-color: green;
-    border-radius: 50%;
-    margin-left: -15px;
-    margin-top: 30px;
-    border: 2px solid #f8f9fa;
-}
+      .online {
+          width: 10px;
+          height: 10px;
+          background-color: green;
+          border-radius: 50%;
+          margin-left: -15px;
+          margin-top: 30px;
+          border: 2px solid #f8f9fa;
+      }
 
-.info {
-    display: flex;
-    flex-direction: column;
-}
+      .info {
+          display: flex;
+          flex-direction: column;
+      }
 
-.user-name {
-    font-weight: bold;
-    margin: 0;
-}
+      .user-name {
+          font-weight: bold;
+          margin: 0;
+      }
 
-.chat-status {
-    font-size: 0.9em;
-    color: #888;
-    margin: 0;
-}
+      .chat-status {
+          font-size: 0.9em;
+          color: #888;
+          margin: 0;
+      }
 
       </style>
   
@@ -360,7 +357,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-user" aria-expanded="false" aria-controls="ui-user">
-              <i class="icon-layout menu-icon"></i>
+              <i class="mdi mdi-account-multiple icon-layout menu-icon"></i>
               <span class="menu-title">Users</span>
               <i class="menu-arrow"></i>
             </a>
@@ -373,7 +370,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-book-open-variant"></i>
               <span class="menu-title">Products</span>
               <i class="menu-arrow"></i>
             </a>
@@ -386,7 +383,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-briefcase"></i>
               <span class="menu-title">Orders</span>
               <i class="menu-arrow"></i>
             </a>

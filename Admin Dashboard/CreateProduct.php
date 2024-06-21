@@ -29,9 +29,6 @@ if(!isset($_SESSION["Admin"])){
     $product_name = $_POST["product_name"];
     $description = $_POST["description"];
     $price = $_POST["price"];
-    $waste_type = $_POST["waste_type"];
-    $quantity = $_POST["quantity"];
-    $registerdate = date("Y-m-d H:i:s");
     
     
 
@@ -49,23 +46,6 @@ if(!isset($_SESSION["Admin"])){
       "Product_image" => 'uploads/' .  $name_image ,
     ));
 
-    $last_record = $connect->lastInsertId();
-
-    // create wasteentries 
-    $create_product = $connect->prepare("INSERT INTO
-                                          wasteentries
-                                        (UserID , ProductID , WasteType , Quantity , CollectionTime , `Status`)
-                                        VALUES
-                                        (:UserID , :ProductID , :WasteType , :Quantity , :CollectionTime , :Stat) ");
-    // sql create wasteentries
-    $create_product->execute(array(
-      "UserID" => $_SESSION['Admin_id'] ,
-      "ProductID" => $last_record ,
-      "WasteType" => $waste_type ,
-      "Quantity" => $quantity ,
-      "CollectionTime" => $registerdate ,
-      "Stat" => 'Pending' ,
-    ));
 
     header("location: indexProduct.php");
     exit(); 
@@ -243,7 +223,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-user" aria-expanded="false" aria-controls="ui-user">
-              <i class="icon-layout menu-icon"></i>
+              <i class="mdi mdi-account-multiple icon-layout menu-icon"></i>
               <span class="menu-title">Users</span>
               <i class="menu-arrow"></i>
             </a>
@@ -256,7 +236,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-book-open-variant"></i>
               <span class="menu-title">Products</span>
               <i class="menu-arrow"></i>
             </a>
@@ -269,7 +249,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-briefcase"></i>
               <span class="menu-title">Orders</span>
               <i class="menu-arrow"></i>
             </a>
@@ -341,23 +321,7 @@ if(!isset($_SESSION["Admin"])){
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">waste type</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="waste_type" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">quantity</label>
-                          <div class="col-sm-9">
-                            <input type="number" class="form-control" name="quantity" />
-                          </div>
-                        </div>
-                      </div>
-                       
+                      
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label"></label>

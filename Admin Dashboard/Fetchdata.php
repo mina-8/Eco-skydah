@@ -32,10 +32,6 @@ if(isset($_POST["deleteuser"])){
       // delete image from folder uploads
       unlink($path_image);
       
-      // delete wasteentries
-      $delete_wasteentr = $connect->prepare("DELETE FROM wasteentries WHERE ProductID=:productid");
-      $delete_wasteentr->bindParam("productid" , $row_product['ProductID']);
-      $delete_wasteentr->execute();
       // delete products
       $delete_product = $connect->prepare("DELETE FROM products WHERE ProductID=:productid");
       $delete_product->bindParam("productid" , $row_product['ProductID']);

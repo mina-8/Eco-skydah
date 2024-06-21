@@ -42,14 +42,7 @@ if(!isset($_SESSION["Admin"])){
                                               WHERE
                                               UserID=?");
     $update_user_points->execute(array($user_points , $user_id));
-    // update wasteentries
-    $update_wasteentr = $connect->prepare("UPDATE 
-                                            wasteentries
-                                            SET
-                                            `Status`=?
-                                            WHERE
-                                            ProductID=?");
-    $update_wasteentr->execute(array('Done' ,$product_id));
+    
 
     // create rewards 
     $create_rewards = $connect->prepare("INSERT INTO
@@ -77,56 +70,13 @@ if(!isset($_SESSION["Admin"])){
       "created_at" => $RedemptionDate
     ));
 
-    header("location: Allorders.php");
-    exit(); 
-    }else{
-    // update users points
-    $fetch_user_points = $connect->prepare("SELECT Points FROM users WHERE UserID=?");
-    $fetch_user_points->execute(array($user_id));
-    $user_points = $fetch_user_points->fetch();
-    $user_points = (int)$user_points['Points'] + $PointsRedeemed;
-    $update_user_points = $connect->prepare("UPDATE 
-                                                users
-                                              SET
-                                              Points=?
-                                              WHERE
-                                              UserID=?");
-    $update_user_points->execute(array($user_points , $user_id));
-    
     // update wasteentries
-    $update_wasteentr = $connect->prepare("UPDATE 
+    $delete_wasteentr = $connect->prepare("DELETE FROM 
                                             wasteentries
-                                            SET
-                                            `Status`=?
                                             WHERE
-                                            ProductID=?");
-    $update_wasteentr->execute(array('Done' ,$product_id));
-    
-    // create rewards 
-    $create_rewards = $connect->prepare("INSERT INTO
-                                              rewards
-                                            (UserID , PointsRedeemed , RewardType , RedemptionDate)
-                                            VALUES
-                                            (:UserID , :PointsRedeemed , :RewardType , :RedemptionDate) ");
-    // sql create wasteentries
-    $create_rewards->execute(array(
-    "UserID" => $user_id ,
-    "PointsRedeemed" => $PointsRedeemed ,
-    "RewardType" => $RewardType ,
-    "RedemptionDate" => $RedemptionDate ,
-    ));
-    
-    // create notfication
-    $create_notfication = $connect->prepare("INSERT INTO
-                                              notifcations
-                                              (User_id , textnotfication , created_at)
-                                              VALUES
-                                              (:userid , :textnotfi , :created_at)");
-    $create_notfication->execute(array(
-      "userid" => $user_id,
-      "textnotfi" => $textnotfication,
-      "created_at" => $RedemptionDate
-    ));
+                                            ProductID=:productid");
+    $delete_wasteentr->bindParam('productid' ,$product_id);
+    $delete_wasteentr->execute();
 
     header("location: Allorders.php");
     exit(); 
@@ -305,7 +255,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-user" aria-expanded="false" aria-controls="ui-user">
-              <i class="icon-layout menu-icon"></i>
+              <i class="mdi mdi-account-multiple icon-layout menu-icon"></i>
               <span class="menu-title">Users</span>
               <i class="menu-arrow"></i>
             </a>
@@ -318,7 +268,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-book-open-variant"></i>
               <span class="menu-title">Products</span>
               <i class="menu-arrow"></i>
             </a>
@@ -331,7 +281,7 @@ if(!isset($_SESSION["Admin"])){
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
-              <i class="icon-layout menu-icon"></i>
+            <i class="icon-layout menu-icon mdi mdi-briefcase"></i>
               <span class="menu-title">Orders</span>
               <i class="menu-arrow"></i>
             </a>

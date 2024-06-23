@@ -3,79 +3,65 @@ include "connection/connection.php";
 ob_start();
 session_start();
 
-// check for type user in table user
+// Check if admin is logged in
 if (isset($_SESSION["Admin"])) {
   header("location: dashboard.php");
   exit();
 }
 
-// check if not tabel users has no admin
-$check_admin = $connect->prepare("SELECT UserID FROM users WHERE `Type`=? AND UserID=?");
-$check_admin->execute(array("Admin", 1));
-$row_admin = $check_admin->fetch();
+// Check if there is at least one admin in the users table
+$check_admin = $connect->prepare("SELECT UserID FROM users WHERE `Type`=?");
+$check_admin->execute(array("Admin"));
 $count_admin = $check_admin->rowCount();
+
 if ($count_admin > 0) {
-
-  // get request from form php self
+  // Login form submission handling
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $email = $_POST["email"];
     $password = $_POST["password"];
-    // sql in database of users table
-    $sql_statement = $connect->prepare("SELECT 
-                                          UserID , FirstName , Email , `Password` , `Type`
-                                        FROM
-                                          users
-                                        WHERE
-                                           Email=? 
-                                        AND
-                                            `Type`='Admin'
-                                        ");
+
+    // Fetch user details from database
+    $sql_statement = $connect->prepare("SELECT UserID, FirstName, Email, Password, Type FROM users WHERE Email=? AND Type IN ('Admin', 'Volunteer')");
     $sql_statement->execute(array($email));
     $row = $sql_statement->fetch();
     $count = $sql_statement->rowCount();
-    if ($count > 0) {
-      if (password_verify($password, $row["Password"])) {
-        $_SESSION["Admin"] = $row["Type"];
+
+    if ($count > 0 && password_verify($password, $row["Password"])) {
+      // Set session variables for logged in user
+      $_SESSION["Admin"] = $row["Type"];
         $_SESSION["Admin_id"] = $row["UserID"];
         $_SESSION["Admin_name"] = $row["FirstName"];
+        $_SESSION["UserID"] = $row["UserID"];
+      $_SESSION["UserType"] = $row["Type"];
+      $_SESSION["UserName"] = $row["FirstName"];
         header("location: dashboard.php?user=" . $_SESSION["Admin"]);
-        exit();
-
-      }
+      exit();
+    } else {
+      $error_message = "Invalid email or password";
     }
-
   }
 } else {
-  if ($row_admin["UserID"] !== 1) {
+  // Create default admin user if no admin exists
+  $firstname = "Admin";
+  $lastname = "Admin";
+  $email = "admin@mail.com";
+  $password = password_hash("password", PASSWORD_DEFAULT);
+  $type = "Admin";
+  $registerdate = date("Y-m-d H:i:s");
+  $points = 0;
 
-    // create admin by default if not admin in table users
-    $firstname = "Admin";
-    $lastname = "my admin";
-    $email = "admin@mail.com";
-    $password = password_hash("password", PASSWORD_DEFAULT);
-    $type = "Admin";
-    $registerdate = date("Y-m-d H:i:s");
-    $points = 0;
-    $create_admin = $connect->prepare("INSERT INTO
-                                          users
-                                          (FirstName , LastName , Email , `Password` , `Type` , RegistrationDate , Points)
-                                          VALUES
-                                          (:firstname , :lastname , :email , :pass , :types , :registerdate , :points) ");
-    // sql create admin
-    $create_admin->execute(
-      array(
-        "firstname" => $firstname,
-        "lastname" => $lastname,
-        "email" => $email,
-        "pass" => $password,
-        "types" => $type,
-        "registerdate" => $registerdate,
-        "points" => $points
-      )
-    );
-  }
+  $create_admin = $connect->prepare("INSERT INTO users (FirstName, LastName, Email, Password, Type, RegistrationDate, Points)
+                                    VALUES (:firstname, :lastname, :email, :password, :type, :registerdate, :points)");
 
+  $create_admin->execute(array(
+    "firstname" => $firstname,
+    "lastname" => $lastname,
+    "email" => $email,
+    "password" => $password,
+    "type" => $type,
+    "registerdate" => $registerdate,
+    "points" => $points
+  ));
 }
 
 ?>
@@ -87,7 +73,7 @@ if ($count_admin > 0) {
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Eco Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -129,7 +115,7 @@ if ($count_admin > 0) {
                   <!-- <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="index.html">SIGN IN</a> -->
                 </div>
 
-                <div class="my-2 d-flex justify-content-between align-items-center">
+               <!--  <div class="my-2 d-flex justify-content-between align-items-center">
                   <div class="form-check">
                     <label class="form-check-label text-muted">
                       <input type="checkbox" class="form-check-input">
@@ -145,7 +131,7 @@ if ($count_admin > 0) {
                 </div>
                 <div class="text-center mt-4 font-weight-light">
                   Don't have an account? <a href="register.html" class="text-primary">Create</a>
-                </div>
+                </div> -->
               </form>
             </div>
           </div>

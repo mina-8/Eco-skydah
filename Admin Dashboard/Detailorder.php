@@ -93,7 +93,7 @@ if(!isset($_SESSION["Admin"])){
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Eco Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -246,65 +246,73 @@ if(!isset($_SESSION["Admin"])){
       </div>
     </nav>
     <div class="container-fluid page-body-wrapper">
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link"href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"]?>>
+            <a class="nav-link" href=<?php echo "dashboard.php?user=" . $_SESSION["Admin"] ?>>
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-user" aria-expanded="false" aria-controls="ui-user">
-              <i class="mdi mdi-account-multiple icon-layout menu-icon"></i>
-              <span class="menu-title">Users</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-user">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="indexUser.php">All Users</a></li>
-                <li class="nav-item"> <a class="nav-link" href="CreateUser.php">Create New User</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
-            <i class="icon-layout menu-icon mdi mdi-book-open-variant"></i>
-              <span class="menu-title">Products</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-product">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="indexProduct.php">All Products</a></li>
-                <li class="nav-item"> <a class="nav-link" href="CreateProduct.php">Create New Product</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false" aria-controls="ui-product">
-            <i class="icon-layout menu-icon mdi mdi-briefcase"></i>
-              <span class="menu-title">Orders</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-order">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="Allorders.php">All Orders</a></li>
-                
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-chat" aria-expanded="false" aria-controls="ui-product">
-              <i class="mdi mdi-wechat icon-layout menu-icon"></i>
-              <span class="menu-title">Chats</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-chat">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="MainChat.php">All Chats</a></li>
-              </ul>
-            </div>
-          </li>
+          <?php if ($_SESSION["UserType"] != "Volunteer"): ?>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-user" aria-expanded="false" aria-controls="ui-user">
+                <i class="mdi mdi-account-multiple icon-layout menu-icon"></i>
+                <span class="menu-title">Users</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="ui-user">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"><a class="nav-link" href=<?php echo "indexUser.php?user=" . $_SESSION["Admin"] ?>>All Users</a></li>
+                  <li class="nav-item"><a class="nav-link" href=<?php echo "CreateUser.php?user=" . $_SESSION["Admin"] ?>>Create New User</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false"
+                aria-controls="ui-product">
+                <i class="icon-layout menu-icon mdi mdi-book-open-variant"></i>
+                <span class="menu-title">Products</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="ui-product">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"><a class="nav-link" href="indexProduct.php">All Products</a></li>
+                  <li class="nav-item"><a class="nav-link" href="CreateProduct.php">Create New Product</a></li>
+                </ul>
+              </div>
+            </li>
+          <?php endif; ?>
+          <?php if ($_SESSION["UserType"] == "Volunteer" || $_SESSION["UserType"] == "Admin"): ?>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-order" aria-expanded="false"
+                aria-controls="ui-product">
+                <i class="icon-layout menu-icon mdi mdi-briefcase"></i>
+                <span class="menu-title">Orders</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="ui-order">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"><a class="nav-link" href="Allorders.php">All Orders</a></li>
+                </ul>
+              </div>
+            </li>
+          <?php endif; ?>
+          <?php if ($_SESSION["UserType"] != "Volunteer"): ?>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-chat" aria-expanded="false" aria-controls="ui-product">
+                <i class="mdi mdi-wechat icon-layout menu-icon"></i>
+                <span class="menu-title">Chats</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="ui-chat">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"><a class="nav-link" href="MainChat.php">All Chats</a></li>
+                </ul>
+              </div>
+            </li>
+          <?php endif; ?>
+
         </ul>
       </nav>
       <div class="main-panel">      

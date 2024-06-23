@@ -22,7 +22,7 @@ if(!isset($_SESSION["Admin"])){
     $email = $_POST["email"];
     $password = password_hash($_POST["password"] , PASSWORD_DEFAULT);
     $types = $_POST["types"];
-    $points = 0;
+    $points = $_POST["points"];
     
     // update users 
     $update_user = $connect->prepare("UPDATE
@@ -47,7 +47,7 @@ if(!isset($_SESSION["Admin"])){
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Eco Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -285,6 +285,8 @@ if(!isset($_SESSION["Admin"])){
                       Personal info
                     </p>
                     <input type="hidden" name="userid" value=<?php echo $user['UserID']?> />
+                    <input type="hidden" name="points" value=<?php echo $user['Points']?> />
+
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
@@ -327,6 +329,7 @@ if(!isset($_SESSION["Admin"])){
                             <select class="form-control"  name="types" Required>
                               <option value="Admin" <?php if($user["Type"] === "Admin"){echo "selected";} ?>>Admin</option>
                               <option value="User" <?php if($user["Type"] === "User"){echo "selected";} ?>>User</option>
+                              <option value="Volunteer" <?php if($user["Type"] === "Volunteer"){echo "selected";} ?>>Volunteer</option>
                             </select>
                           </div>
                         </div>

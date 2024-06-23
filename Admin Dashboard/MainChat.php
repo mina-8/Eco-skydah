@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Eco Admin</title>
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
@@ -398,8 +398,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <ul class="chat-list">
         <?php  
         // fetch user form table users
-        $fetch_user = $connect->prepare("SELECT * FROM users WHERE  `UserID` !=? AND  `Type` !=?");
-        $fetch_user->execute(array($_SESSION['Admin_id'] , 'Admin'));
+        $fetch_user = $connect->prepare("SELECT * FROM users WHERE  `UserID` !=? AND  `Type` =?");
+        $fetch_user->execute(array($_SESSION['Admin_id'] , 'User'));
         $row_user = $fetch_user->fetchAll();
         $count_user = $fetch_user->rowCount();
         // start if condition is users > 0
